@@ -3,12 +3,15 @@ import { type DataValue, type PaginTable } from '../../../shared/types/data.js'
 
 import './style.css'
 import { addEvents, debounce, N } from '@/util/ui.js'
+import { typenameMap } from '@/shared/datautils/banking.js'
 
 const RE = {
   seq: /^#\d+/,
   date: /^20[12]\d-/,
-  type: /^(RE|UW|GS|AB|LS|GSDA|DA)$/i,
+  type: new RegExp(`^(${Object.keys(typenameMap).join('|')})$`, 'i'),
 }
+
+console.log(RE.type)
 
 interface BankingMetrics {
   aavg: number

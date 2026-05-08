@@ -5,9 +5,10 @@ import fs from 'fs'
 
 const OUTPUT = './public/data/ta/YEAR.txt'
 
-const typenameMap: Record<string, string> = {
+export const typenameMap: Record<string, string> = {
   AB: 'Abschluss',
   DA: 'Dauerauftrag / Terminueberweisung',
+  EZ: 'Echtzeitüberweisung',
   GS: 'Gutschrift',
   GSDA: 'Gutschrift aus Dauerauftrag',
   LS: 'Lastschrift',
