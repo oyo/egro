@@ -1,0 +1,22 @@
+.input-key {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #808080;
+}
+
+.input-key input {
+  color: #404040;
+  font-size: 2vh;
+  font-weight: bold;
+  width: 60vw;
+  padding: 1vh;
+}
+
+.input-key input::placeholder {
+  color: #e0e0e0;
+  font-style: italic;
+}

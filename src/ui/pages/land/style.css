@@ -1,0 +1,74 @@
+.page.land {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.page.land > div {
+  width: 100%;
+  height: 100%;
+}
+
+.land-list {
+  position: absolute;
+  left: 7vh;
+  top: 1vh;
+  max-height: 98vh;
+  max-width: 20vw;
+  z-index: 99999;
+  opacity: 1;
+}
+
+.land-list:hover {
+  opacity: 1;
+}
+
+.land-list input {
+  height: 3vh;
+  font-size: 2vh;
+  width: 97%;
+}
+
+.land-list ul {
+  margin-top: 2vh;
+  list-style-type: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0;
+  height: 94vh;
+  overflow: scroll;
+}
+
+.land-list-item {
+  padding: 0.5vh;
+  border: 1px solid lightgray;
+}
+
+.own {
+  color: #008800;
+}
+
+.nown {
+  color: #ff8800;
+}
+
+.land-details-item {
+  background-color: white;
+}
+
+.land-details-item td {
+  padding: 0.5vh;
+  width: 9vw;
+}
+
+.land-details-item .use-category {
+  font-weight: bold;
+}
+
+.land-details-item .use-value {
+  text-align: right;
+}
+
+.land-details-item .use-gesamt {
+  background-color: lightgray;
+}

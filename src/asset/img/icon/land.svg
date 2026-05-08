@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <defs>
+    <style>.land{fill:#c0c0c0;}.rose{fill:#c0c0c0;}.hof{fill:#f0f0f0;}.crose{fill:none;stroke:#c0c0c0;stroke-width:1;}</style>
+  </defs>
+  <path class="land" d="M 7 55 l -2 -3 l 5 -7 l 5 0 l 5 -18 l 23 -21 l 17 13 l -5 15 l 5 3 l -15 15 l -25 0 l -6 4 z M 38 32 l 0 7 l 7 0 l 0 -7 z"/>
+  <circle class="crose" cx="12" cy="12" r="8" />
+  <path class="rose" d="M 10 10 l 2 -6 l 2 6 l 6 2 l -6 2 l -2 6 l -2 -6 l -6 -2 z M 12 10 l -2 2 l 2 2 l 2 -2 z"/>
+</svg>

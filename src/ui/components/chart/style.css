@@ -1,0 +1,50 @@
+.chart {
+  cursor: pointer;
+  position: fixed;
+  right: 12vh;
+  bottom: 4vh;
+  width: 6vh;
+  height: 6vh;
+  border: 2px solid gray;
+  border-radius: 1vh;
+  font-weight: bold;
+  font-size: 3vh;
+  background-color: white;
+}
+
+.chart:hover {
+  width: 80vh;
+  height: 80vh;
+  background-color: rgb(231, 254, 255);
+}
+
+.chart svg {
+  width: 100%;
+  height: 100%;
+}
+
+.chart-tooltip {
+  font-family: Consolas, 'Courier New', Courier, monospace;
+  display: none;
+  font-size: 1.5vh;
+  position: absolute;
+  left: 2vh;
+  top: 2vh;
+  padding: 1vh;
+  border-radius: 1vh;
+  background-color: white;
+}
+
+.chart-tooltip-head {
+  font-weight: bold;
+  display: inline-block;
+  width: 4vh;
+  min-width: 4vh;
+  text-align: left;
+}
+.chart-tooltip-val {
+  display: inline-block;
+  width: 12vh;
+  min-width: 12vh;
+  text-align: right;
+}

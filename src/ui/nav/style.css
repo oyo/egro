@@ -1,0 +1,35 @@
+.nav {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+}
+
+.nav ul {
+  list-style-type: none;
+  padding-top: 7vh;
+  padding-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.nav li {
+  padding: 0;
+  margin: 0;
+  max-height: 6vh;
+  cursor: pointer;
+}
+
+.nav li:hover {
+  background-color: #f0f0f0;
+}
+
+.nav li.selected {
+  background-color: #d8d8d8;
+}
+
+.nav svg {
+  margin: 1vh;
+  width: 4vh;
+  height: 4vh;
+}

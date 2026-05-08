@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <defs>
+    <style>.bars{stroke:#c0c0c0;stroke-width:8;}.line{stroke:#c0c0c0;fill:none;stroke-width:3;}.arrow{fill:#c0c0c0;stroke-width:0;}</style>
+    <marker
+      class="arrow"
+      id="arrow"
+      viewBox="0 0 10 10"
+      refX="2"
+      refY="2"
+      markerWidth="6"
+      markerHeight="6"
+      orient="auto-start-reverse">
+      <path d="M 0 0 L 4 2 L 0 4 z" />
+    </marker>
+  </defs>
+  <path class="bars" d="M 10 50 l 0 -5 M 20 50 l 0 -20 M 30 50 l 0 -12 M 40 50 l 0 -24 M 50 50 l 0 -30"/>
+  <path class="line" d="M 10 35 l 10 -15 l 10 8 l 10 -12 l 10 -6"  marker-end="url(#arrow)"/>
+</svg>
