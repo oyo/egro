@@ -12,9 +12,8 @@ export const json = (o: any) => {
   try {
     return JSON.stringify(o, null, 2)
   } catch (e) {
-    return e
+    return String(e)
   }
-  return o
 }
 
 export const append = (n: Element, c: any) => {

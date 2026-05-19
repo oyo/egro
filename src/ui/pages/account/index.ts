@@ -1,13 +1,13 @@
 import { N, Viewable } from '@/util/ui'
 import './style.css'
 import table from '@/ui/components/table'
-import chart from '@/ui/components/chart'
+import chartButton from '@/ui/components/chartButton'
 import download from '@/ui/components/download'
 
 class Account extends Viewable {
   constructor() {
     super()
-    this.view = N('div', [table, chart, download], { class: 'page account' })
+    this.view = N('div', [table, chartButton, download], { class: 'page account' })
   }
 }
 

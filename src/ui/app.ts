@@ -6,8 +6,9 @@ import { loadData, storeData } from '@/ui/features/data'
 import store from '@/ui/features/store'
 import keyInput from '@/ui/components/key/index.js'
 import { setFilterData } from '@/ui/components/table'
-import { renderData } from '@/ui/components/chart'
+import { renderData } from '@/ui/components/chartButton'
 import './style.css'
+import chartView from './components/chartView'
 
 const param = new URLSearchParams(location.search)
 const userkey = param.get('key')
@@ -25,6 +26,7 @@ if (store.banking.rows.length === 0) {
 } else {
   setFilterData(store.banking)
   renderData(store.banking)
+  chartView.setData(store.banking)
   view = N('div', [Nav, Main], { class: 'app' }) as HTMLDivElement
 }
 

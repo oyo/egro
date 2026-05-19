@@ -11,8 +11,6 @@ const RE = {
   type: new RegExp(`^(${Object.keys(typenameMap).join('|')})$`, 'i'),
 }
 
-console.log(RE.type)
-
 interface BankingMetrics {
   aavg: number
   amax: number

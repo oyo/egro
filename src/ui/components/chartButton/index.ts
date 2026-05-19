@@ -62,8 +62,8 @@ const prepareData = (data: number[][]) =>
     data,
   )
 
-const chart = N('div', undefined, { class: 'chart-graph' })
-const view = N('div', [chart, tooltip], { class: 'chart' })
+const chart = N('div', undefined, { class: 'chart-button-graph' })
+const view = N('div', [chart, tooltip], { class: 'chart-button' })
 
 export const renderData = (data: PaginTable) => {
   chart.innerHTML = renderChart(
@@ -89,7 +89,7 @@ export const renderData = (data: PaginTable) => {
         )
         b.addEventListener('mouseout', hideTooltip)
       }),
-    100,
+    200,
   )
 }
 
