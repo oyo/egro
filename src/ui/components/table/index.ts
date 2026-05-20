@@ -171,4 +171,9 @@ export function setFilterData(data: PaginTable) {
   renderFunction(true)
 }
 
+export function setFilterValue(val: string) {
+  filterInput.value = val
+  renderFunction(true)
+}
+
 export default view

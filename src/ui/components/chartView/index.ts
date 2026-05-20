@@ -1,7 +1,10 @@
-import { createChart, LineSeries, type IChartApi } from 'lightweight-charts'
+import { BaselineSeries, createChart, type IChartApi } from 'lightweight-charts'
 import { N, Viewable } from '@/util/ui'
 import './style.css'
 import type { PaginTable } from '@/shared/types/data'
+import { setFilterValue } from '../table'
+import { store } from '@/state/store'
+import { selectPage, type NavOption } from '@/state/navSlice'
 
 class ChartView extends Viewable {
   chart: IChartApi
@@ -14,6 +17,11 @@ class ChartView extends Viewable {
       height: window.innerHeight,
     }
     this.chart = createChart(this.view as HTMLElement, dim)
+    this.chart.subscribeClick((param) => {
+      if (!param.point || !param.time) return
+      setFilterValue(param.time as string)
+      store.dispatch(selectPage('account' as NavOption))
+    })
   }
 
   setData(data: PaginTable) {
@@ -34,8 +42,17 @@ class ChartView extends Viewable {
           ),
       ),
     )
-    const lineSeries = this.chart.addSeries(LineSeries)
-    lineSeries.setData(series)
+    const chartSeries = this.chart.addSeries(BaselineSeries, {
+      baseLineColor: 'white',
+      topFillColor1: '#00b000',
+      topFillColor2: 'rgba(0, 176, 0, 0.2)',
+      bottomFillColor1: 'orange',
+      bottomFillColor2: 'rgba(255, 165, 0, 0.2)',
+      topLineColor: '#00b000',
+      bottomLineColor: 'orange',
+      lineWidth: 2,
+    })
+    chartSeries.setData(series)
     this.chart.timeScale().fitContent()
   }
 }
