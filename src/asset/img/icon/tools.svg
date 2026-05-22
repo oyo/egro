@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <defs>
+    <style>.tools{fill:#c0c0c0;}.screw{fill:#a0a0a0;}</style>
+  </defs>
+  <g transform="translate(-2,-2)scale(1.7,1.7)">
+  <path class="tools" d="
+  M 4 26
+  l 10 -10
+  a 6 6 0 0 0 2 -5
+  a 9.5 9.5 0 0 1 15 -8
+  a 1 1 0 0 1 0 0.8
+  l -7 2.5
+  a 5.8 5.8 0 0 0 4 10.4
+  l 6.5 -2.35
+  a 1 1 0 0 1 0.7 0.7
+  a 9.5 9.5 0 0 1 -9 6.5
+  a 6 6 0 0 0 -6 2.2
+  l -9 9
+  z"/>
+  <path class="screw" d="
+  M 24 12.2
+  l 1 -6
+  l 5.8 -2.1
+  l 4.7 4
+  l -1 6
+  l -5.8 2.1
+  z
+  M 32.7 10.2
+  a 3 3 1 1 0 0 .1
+  z" />
+  </g>
+</svg>

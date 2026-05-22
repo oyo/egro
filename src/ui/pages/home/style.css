@@ -1,5 +1,4 @@
 .page.home {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  padding: 10vh 10vw;
+  background-color: #0d1117;
 }

@@ -9,9 +9,9 @@ import homeSvg from '@/asset/img/icon/home.svg?raw'
 import accountSvg from '@/asset/img/icon/account.svg?raw'
 import chartSvg from '@/asset/img/icon/chart.svg?raw'
 import landSvg from '@/asset/img/icon/land.svg?raw'
-import './style.css'
 import { goTo } from '@/util/nav'
-import chart from '../components/chartView'
+import Chart from '../pages/chart'
+import './style.css'
 
 export const context = '/egro/'
 
@@ -26,13 +26,15 @@ const Icons: Record<NavOption, SVGElement> = {
   account: createIcon(accountSvg),
   chart: createIcon(chartSvg),
   land: createIcon(landSvg),
+  //tools: createIcon(toolsSvg),
 }
 
 export const Pages: Record<NavOption, Viewable> = {
   home: Home,
   account: Account,
-  chart: chart,
+  chart: Chart,
   land: Land,
+  //tools: Tools,
 }
 
 class NavSingle extends Viewable {

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export type NavOption = 'home' | 'account' | 'chart' | 'land'
+export type NavOption = 'home' | 'account' | 'chart' | 'land' //| 'tools'
 
 export interface NavState {
   selected: string
