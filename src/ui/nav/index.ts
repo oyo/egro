@@ -4,12 +4,14 @@ import { selectPage, type NavOption } from '@/state/navSlice'
 import Home from '../pages/home'
 import Account from '../pages/account'
 import Land from '../pages/land'
+import Tools from '../pages/tools'
 import Main from '../main'
 import homeSvg from '@/asset/img/icon/home.svg?raw'
 import accountSvg from '@/asset/img/icon/account.svg?raw'
 import chartSvg from '@/asset/img/icon/chart.svg?raw'
 import landSvg from '@/asset/img/icon/land.svg?raw'
-import { goTo } from '@/util/nav'
+import toolsSvg from '@/asset/img/icon/tools.svg?raw'
+import { goTo, isAdmin } from '@/util/nav'
 import Chart from '../pages/chart'
 import './style.css'
 
@@ -26,7 +28,7 @@ const Icons: Record<NavOption, SVGElement> = {
   account: createIcon(accountSvg),
   chart: createIcon(chartSvg),
   land: createIcon(landSvg),
-  //tools: createIcon(toolsSvg),
+  tools: createIcon(toolsSvg),
 }
 
 export const Pages: Record<NavOption, Viewable> = {
@@ -34,7 +36,7 @@ export const Pages: Record<NavOption, Viewable> = {
   account: Account,
   chart: Chart,
   land: Land,
-  //tools: Tools,
+  tools: Tools,
 }
 
 class NavSingle extends Viewable {
@@ -44,18 +46,20 @@ class NavSingle extends Viewable {
       'section',
       N(
         'ul',
-        Object.keys(Pages).map((item) =>
-          N(
-            'li',
-            addEvents(N('a', Icons[item as NavOption], { href: item }), {
-              click: (e) => {
-                e.preventDefault()
-                store.dispatch(selectPage(item as NavOption))
-              },
-            }),
-            { class: `nav-item ${item}` },
+        Object.keys(Pages)
+          .filter((p) => p !== 'tools' || isAdmin())
+          .map((item) =>
+            N(
+              'li',
+              addEvents(N('a', Icons[item as NavOption], { href: item }), {
+                click: (e) => {
+                  e.preventDefault()
+                  store.dispatch(selectPage(item as NavOption))
+                },
+              }),
+              { class: `nav-item ${item}` },
+            ),
           ),
-        ),
       ),
       { class: 'nav' },
     )

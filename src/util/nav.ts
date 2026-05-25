@@ -4,6 +4,8 @@ import { context, Pages } from '@/ui/nav'
 
 const args = new URLSearchParams(location.search)
 
+export const isAdmin = () => args.get('key')?.endsWith('1qv4xob1p3d')
+
 export const getPageName = (): NavOption => {
   const page = args.get('page') ?? location.pathname.split('/').slice(2).join('/')
   return (Object.keys(Pages).includes(page) ? page : 'home') as NavOption

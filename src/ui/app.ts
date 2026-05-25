@@ -26,7 +26,7 @@ if (store.banking.rows.length === 0) {
 } else {
   setFilterData(store.banking)
   renderData(store.banking)
-  chartView.setData(store.banking)
+  await chartView.setData(store.banking)
   view = N('div', [Nav, Main], { class: 'app' }) as HTMLDivElement
 }
 

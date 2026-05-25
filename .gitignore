@@ -5,3 +5,4 @@ dist
 *.log
 .env
 public/data/blog/history.md
+src/asset/data/tbc.txt

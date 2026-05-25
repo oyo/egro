@@ -23,12 +23,7 @@ class Blog extends Viewable {
         )
           .trim()
           .split('\n')
-          .map(async (item) => {
-            console.log(item)
-            const ys = String(await decryptData(item.split(',')[1]))
-            console.log(ys)
-            return ys
-          }),
+          .map(async (item) => String(await decryptData(item.split(',')[1]))),
       )
     ).join('\n\n')
     this.append(N('script', md, { type: 'text/markdown' }))
