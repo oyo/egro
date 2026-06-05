@@ -89,7 +89,7 @@ export const renderData = (data: PaginTable) => {
         )
         b.addEventListener('mouseout', hideTooltip)
       }),
-    200,
+    500,
   )
 }
 

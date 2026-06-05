@@ -1,6 +1,6 @@
 import { BaselineSeries, createChart, type IChartApi } from 'lightweight-charts'
 import { N, Viewable } from '@/util/ui'
-import type { PaginTable } from '@/shared/types/data'
+import { defaultPaginMeta, type PaginTable } from '@/shared/types/data'
 import { setFilterValue } from '../table'
 import { store } from '@/state/store'
 import { selectPage, type NavOption } from '@/state/navSlice'
@@ -9,11 +9,17 @@ import './style.css'
 import { decryptData } from '@/ui/features/data'
 
 class ChartView extends Viewable {
-  chart: IChartApi
+  chart?: IChartApi
+  data: PaginTable = { meta: defaultPaginMeta, headers: [], rows: [] }
 
   constructor() {
     super()
     this.view = N('div', undefined, { class: 'chart-view' })
+  }
+
+  async setData(data?: PaginTable) {
+    if (data) this.data = data
+    this.clear()
     const dim = {
       width: window.innerWidth * 0.96,
       height: window.innerHeight,
@@ -24,9 +30,6 @@ class ChartView extends Viewable {
       setFilterValue(param.time as string)
       store.dispatch(selectPage('account' as NavOption))
     })
-  }
-
-  async setData(data: PaginTable) {
     const today = new Date().toISOString().substring(0, 10)
     const seriesWP = (await decryptData(tb.trim()))
       .split('\n')
@@ -51,7 +54,7 @@ class ChartView extends Viewable {
     chartSeriesWP.setData(seriesWP)
     const series = [{ time: '2016-10-01', value: 0 }].concat(
       Object.values(
-        data.rows
+        this.data.rows
           .map((r) => ({
             time: r[1] as string,
             value: Number(r[6]),
@@ -78,6 +81,13 @@ class ChartView extends Viewable {
     })
     chartSeries.setData(series)
     this.chart.timeScale().fitContent()
+    window.addEventListener('resize', (_e: Event) => {
+      const dim = {
+        width: window.innerWidth * 0.96,
+        height: window.innerHeight,
+      }
+      this.chart?.resize(dim.width, dim.height)
+    })
   }
 }
 
