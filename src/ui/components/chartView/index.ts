@@ -27,10 +27,17 @@ class ChartView extends Viewable {
   }
 
   async setData(data: PaginTable) {
+    const today = new Date().toISOString().substring(0, 10)
     const seriesWP = (await decryptData(tb.trim()))
       .split('\n')
       .map((r) => r.split(','))
       .map((r) => ({ time: r[0], value: Number(r[1]) }))
+    const lastItem = seriesWP[seriesWP.length - 1]
+    if (lastItem.time !== today)
+      seriesWP.push({
+        time: today,
+        value: lastItem.value,
+      })
     const chartSeriesWP = this.chart.addSeries(BaselineSeries, {
       baseLineColor: 'white',
       topFillColor1: 'rgb(176, 176, 176)',
