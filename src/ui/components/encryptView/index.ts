@@ -1,5 +1,5 @@
 import { addEvents, N, Viewable } from '@/util/ui'
-import { dropIn, dropOut } from 'drop.that'
+import { dropIn, dropOut, fromText } from 'drop.that'
 import { decryptData, encryptData } from '@/ui/features/data'
 import './style.css'
 
@@ -10,10 +10,10 @@ class EncryptView extends Viewable {
     super()
     this.view = addEvents(N('button', 'crypt', { class: 'encrypt-view' }), {
       click: async () => {
-        const input = (await dropIn({ autoStart: true })).trim()
+        const input = (await (await dropIn({ autoStart: true })).text()).trim()
         const action = isEnc(input) ? decryptData : encryptData
-        await dropOut(await action(input), {
-          autoCopy: true,
+        await dropOut(await fromText(await action(input)), {
+          clipboard: { auto: true },
         })
       },
     })

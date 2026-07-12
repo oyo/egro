@@ -1,6 +1,6 @@
 {
   "name": "egro",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -10,16 +10,16 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
-    "drop.that": "^0.0.5",
+    "drop.that": "^0.1.1",
     "leaflet": "^1.9.4",
     "lightweight-charts": "^5.2.0",
-    "zero-md": "^3.1.7"
+    "zero-md": "^3.1.8"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.21",
-    "@types/node": "^25.9.4",
+    "@types/node": "^25.9.5",
     "typescript": "~6.0.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.2.1",
+    "vite": "npm:@voidzero-dev/vite-plus-core@^0.2.4",
     "vite-plus": "catalog:"
   },
   "packageManager": "pnpm@10.33.1"
