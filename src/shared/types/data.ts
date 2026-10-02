@@ -1,6 +1,12 @@
 export type DataRow = Record<string, DataValue>
 export type DataValue = boolean | Date | null | number | string
 
+export type Release = {
+  build: string
+  version: string
+  hash: Record<string, string>
+}
+
 export interface PageInfo {
   page: number
   pageSize: number

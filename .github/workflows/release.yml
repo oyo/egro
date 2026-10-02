@@ -41,6 +41,7 @@ jobs:
       - run: vp install
       - run: vp check
       # - run: vp test
+      - run: vp run create:meta
       - run: vp build
 
       - name: Setup Pages

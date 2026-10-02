@@ -1,3 +1,4 @@
+import { fetchLatestStatic } from '@/util/data.js'
 import { cryptoUtils } from '../../shared/datautils/crypto.js'
 import { BankingAttributes } from '../../shared/types/banking.js'
 import { defaultPaginMeta } from '../../shared/types/data.js'
@@ -16,19 +17,19 @@ export const decryptData = async (data: string, mkey?: string): Promise<string> 
 }
 
 export const loadDatafile = async (name: string, mkey?: string): Promise<string> => {
-  const response = await fetch(name)
+  const response = await fetchLatestStatic(name)
   const data = await response.text()
   return await decryptData(data, mkey)
 }
 
 const loadYear = async (year: number, mkey?: string): Promise<string> =>
-  await loadDatafile(`./data/ta/${year}.txt`, mkey)
+  await loadDatafile(`data/ta/${year}.txt`, mkey)
 
 export const getKey = async (ukey?: string): Promise<string> => {
   const userkey = ukey ?? new URLSearchParams(location.search).get('key') ?? ''
   let keys: Record<string, string>
   {
-    const response = await fetch('data/keys.json')
+    const response = await fetchLatestStatic('data/keys.json')
     keys = (await response.json()) as Record<string, string>
   }
   if (userkey.length !== 22) return ''

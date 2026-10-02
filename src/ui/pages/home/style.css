@@ -2,3 +2,8 @@
   padding: 10vh 10vw;
   background-color: #0d1117;
 }
+
+.page.home.version {
+  padding: 10vh 0 0 0;
+  color: gray;
+}
