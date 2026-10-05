@@ -40,6 +40,9 @@ importers:
       '@types/node':
         specifier: ^25.9.9
         version: 25.9.9
+      dotenv:
+        specifier: ^18.0.5
+        version: 18.0.5
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
@@ -958,6 +961,11 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
+  dotenv@18.0.5:
+    resolution: {integrity: sha512-aBrGvt6KhjxbEnatqMWOMidftwsrCiCvqh1yNIGB9QyF0J+VcWkKDMsvYOEm7ZS82oiV+BT1sTOtIlAmUlTpwQ==}
+    engines: {node: '>=12'}
+    hasBin: true
+
   drop.that@0.1.1:
     resolution: {integrity: sha512-pJDtxrYMyA89zTlWMYYg898+kBVUiEIgl8LbqAuiqtuF8tDPhG6bjiW5SjLJaVf/QfWHwYNlk1ESXdgVK/N3qw==}
 
@@ -993,8 +1001,8 @@ packages:
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
-  immer@11.1.18:
-    resolution: {integrity: sha512-EQyQtLiYW029lyoczMl/Hh4Xu7cDecSc58JRYpHyL4tIAu3eqd1yJzQX04d2BZHDkzFFvm6qJEJWOtfDSWAXbQ==}
+  immer@11.1.21:
+    resolution: {integrity: sha512-bZSadeCPGdaY5/qRLgr6mDSH1ra21rD3rqpiWk7+QTr4ayYPTE9qZYdLh/NdPhMe0wSrTvHD/Lk8q5EwhUs0aw==}
 
   leaflet@1.9.4:
     resolution: {integrity: sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==}
@@ -1478,7 +1486,7 @@ snapshots:
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@standard-schema/utils': 0.3.0
-      immer: 11.1.18
+      immer: 11.1.21
       redux: 5.0.1
       redux-thunk: 3.1.0(redux@5.0.1)
       reselect: 5.3.0
@@ -1719,6 +1727,8 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
+  dotenv@18.0.5: {}
+
   drop.that@0.1.1:
     dependencies:
       '@file-type/xml': 1.1.1
@@ -1778,7 +1788,7 @@ snapshots:
 
   ieee754@1.2.1: {}
 
-  immer@11.1.18: {}
+  immer@11.1.21: {}
 
   leaflet@1.9.4: {}
 

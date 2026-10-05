@@ -49,9 +49,12 @@ export const loadData = async (userkey?: string): Promise<string> => {
 }
 
 export const encryptData = async (data: string): Promise<string> => {
-  const userkey = new URLSearchParams(location.search).get('key') ?? ''
-  const mkey = await getKey(userkey)
-  const [pw, st] = (mkey ?? '').split('.')
+  let gkey = process.env.KEY_GLOBAL
+  if (!gkey) {
+    const userkey = new URLSearchParams(location.search).get('key') ?? ''
+    gkey = await getKey(userkey)
+  }
+  const [pw, st] = (gkey ?? '').split('.')
   const salt = Uint8Array.from(st, (c) => c.charCodeAt(0))
   const key = await cryptoUtils.deriveSecretKey(pw, salt.buffer)
   const { cipher, iv } = await cryptoUtils.encryptText(key, data)

@@ -1,13 +1,14 @@
 {
   "name": "egro",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
     "build": "tsc && vp build",
     "preview": "vp preview",
     "prepare": "vp config",
-    "create:meta": "tsx ./src/script/create-meta.ts"
+    "create:meta": "tsx ./src/script/create-meta.ts",
+    "crypt:blog": "tsx ./src/script/crypt-blog.ts"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.13.0",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/leaflet": "^1.9.22",
     "@types/node": "^25.9.9",
+    "dotenv": "^18.0.5",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "vite": "npm:@voidzero-dev/vite-plus-core@^1.0.0",

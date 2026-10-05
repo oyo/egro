@@ -42,7 +42,7 @@ export const parsePropCsv = (csv: string): Banking[] =>
 
 export const encryptBankingOne = async (path: string) => {
   const data = fs.readFileSync(path).toString()
-  const [pw, st] = (process.env.OXXMAN_PASSWORD ?? '').split('.')
+  const [pw, st] = (process.env.KEY_GLOBAL ?? '').split('.')
   const salt = Uint8Array.from(st, (c) => c.charCodeAt(0))
   const key = await cryptoUtils.deriveSecretKey(pw, salt.buffer)
   const { cipher, iv } = await cryptoUtils.encryptText(key, data)
@@ -64,7 +64,7 @@ export const encryptBankingSlice = async (path: string, ys?: string[]) => {
       {} as Record<string, string[]>,
     )
   Object.keys(years).forEach(async (y) => {
-    const [pw, st] = (process.env.OXXMAN_PASSWORD ?? '').split('.')
+    const [pw, st] = (process.env.KEY_GLOBAL ?? '').split('.')
     const salt = Uint8Array.from(st, (c) => c.charCodeAt(0))
     const key = await cryptoUtils.deriveSecretKey(pw, salt.buffer)
     const { cipher, iv } = await cryptoUtils.encryptText(key, years[y].join('\n'))
