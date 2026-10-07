@@ -6,9 +6,10 @@ import { addEvents, debounce, N } from '@/util/ui.js'
 import { typenameMap } from '@/shared/datautils/banking.js'
 
 const RE = {
-  seq: /^#\d+/,
+  seq: /^#(\d{1,6}(,\d{1,6}){0,99})/,
   date: /^20[12]\d-/,
   type: new RegExp(`^(${Object.keys(typenameMap).join('|')})$`, 'i'),
+  name: /^name:[-a-z. ]{1,99}$/i,
 }
 
 interface BankingMetrics {
@@ -51,9 +52,12 @@ const filterColumns = (table: PaginTable) =>
 const filterRows = (rows: BankingRow[], expr: string) => {
   const re = new RegExp(`(${expr})`, 'i')
   let filt: (row: BankingRow) => boolean
-  if (RE.seq.exec(expr)) filt = (row) => Number(expr.substring(1)) === row.seq
+  if (RE.seq.exec(expr)) filt = (row) => expr.substring(1).split(',').map(Number).includes(row.seq)
   else if (RE.date.exec(expr)) filt = (row) => re.exec(row.date) !== null
-  else if (RE.type.exec(expr)) {
+  else if (RE.name.exec(expr)) {
+    const vre = new RegExp(`(${expr.substring(5)})`, 'i')
+    filt = (row) => vre.exec(row.name) !== null
+  } else if (RE.type.exec(expr)) {
     const typere = new RegExp(`^${expr}$`, 'i')
     filt = (row) => typere.exec(row.type) !== null
   } else
@@ -128,7 +132,7 @@ const render = (rows: BankingRow[]) => {
           { class: 'date' },
         ),
         N('td', SL(row.type), { class: 'type' }),
-        N('td', SL(row.name), { class: 'name' }),
+        N('td', SL(`name:${row.name}`, row.name), { class: 'name' }),
         N('td', row.desc, { class: 'desc' }),
         N('td', formatNumber(row.amnt), { class: `amnt${row.amnt < 0 ? ' neg' : ''}` }),
         N('td', formatNumber(row.blnc), { class: `blnc${row.blnc < 0 ? ' neg' : ''}` }),

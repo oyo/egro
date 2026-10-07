@@ -4,6 +4,7 @@ import ZeroMd from 'zero-md'
 import * as meta from '@/asset/data/meta.json'
 import './style.css'
 import { fetchLatestStatic } from '@/util/data'
+import { utcToDisplayTime } from '@/util/format'
 
 customElements.define('zero-md', ZeroMd)
 
@@ -18,6 +19,7 @@ class Blog extends Viewable {
     void this.loadContent()
   }
   async loadContent() {
+    const key = new URLSearchParams(location.search).get('key') ?? ''
     const md = (
       await Promise.all(
         (
@@ -25,9 +27,11 @@ class Blog extends Viewable {
         )
           .trim()
           .split('\n')
-          .map(async (item) => String(await decryptData(item.split(',')[1]))),
+          .map(async (item) => await decryptData(item.split(',')[1])),
       )
-    ).join('\n\n')
+    )
+      .join('\n\n')
+      .replace(/ href="([^"]{0,99})"/g, ` href="$1&key=${key}"`)
     this.append(N('script', md, { type: 'text/markdown' }))
   }
 }
@@ -35,13 +39,9 @@ class Blog extends Viewable {
 class Version extends Viewable {
   constructor() {
     super()
-    this.view = N(
-      'div',
-      `Version ${meta.version} aktualisiert ${meta.build.substring(0, 10)} ${meta.build.substring(11, 16)}`,
-      {
-        class: 'page home version',
-      },
-    )
+    this.view = N('div', `Version ${meta.version} aktualisiert ${utcToDisplayTime(meta.build)}`, {
+      class: 'page home version',
+    })
   }
 }
 

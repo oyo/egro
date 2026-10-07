@@ -34,7 +34,7 @@ const newClear = [
       .concat(`## Anmerkung\n\n${tail.trim()}`),
     2,
   ),
-].map((r) => (r[0].match(/^20\d{2}$/) ? [r[0], `### ${r[0]}\n\n${r[1]}`] : r))
+].map((r) => (r[0].match(/^\d{4}$/) ? [r[0], `### ${r[0]}\n\n${r[1]}`] : r))
 
 const changed = newClear.reduce(
   (a, c) => ((a[c[0]] = c[1] !== oldClear[c[0]]), a),
