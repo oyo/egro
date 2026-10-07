@@ -1,8 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { decryptData, encryptData } from '@/ui/features/data'
-import * as dotenv from 'dotenv'
 import { chunks } from '@/util/data'
-dotenv.config()
 
 const gkey = process.env.KEY_GLOBAL
 const path = 'public/data/blog/history'

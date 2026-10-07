@@ -1,6 +1,5 @@
 import { formatNumber } from '../../../util/format.js'
 import { type DataValue, type PaginTable } from '../../../shared/types/data.js'
-
 import './style.css'
 import { addEvents, debounce, N } from '@/util/ui.js'
 import { typenameMap } from '@/shared/datautils/banking.js'
@@ -112,6 +111,7 @@ const SL = (val: string, label?: string) =>
     click: (e: Event) => {
       e.preventDefault()
       filterInput.value = val
+      filterInput.select()
       renderFunction()
     },
   })
@@ -184,6 +184,8 @@ const tbody = N('tbody')
 const table = N('table', [tbody], { class: 'banking' })
 const view = N('div', [filterBar, metrics, table])
 
+if (initExpr) filterInput.select()
+
 export function setFilterData(data: PaginTable) {
   dataTable = filterColumns(data)
   renderFunction(true)
@@ -191,6 +193,7 @@ export function setFilterData(data: PaginTable) {
 
 export function setFilterValue(val: string) {
   filterInput.value = val
+  filterInput.select()
   renderFunction(true)
 }
 
