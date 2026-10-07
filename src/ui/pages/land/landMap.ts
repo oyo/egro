@@ -1,6 +1,6 @@
 import { N, Viewable } from '@/util/ui'
 import './style.css'
-import L from 'leaflet'
+import L, { Control, Map } from 'leaflet'
 import Main from '@/ui/main'
 import Land, {
   LandUIEventType,
@@ -32,7 +32,7 @@ const geodesicArea = function (latLngs: L.LatLng[]) {
 
 const Model = {
   layers: {
-    // KARTE: L.tileLayer.provider('OpenStreetMap.Mapnik'),
+    //KARTE: L.tileLayer.provider('OpenStreetMap.Mapnik'),
     KARTE: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -120,18 +120,32 @@ store.subscribe(() => {
   )
 })
 
+class LatLngControl extends Control {
+  onAdd(_map: Map) {
+    return N('div', '\u2295 0.0 , 0.0', { id: 'latlng-view' }) as HTMLElement
+  }
+  onRemove(_map: Map) {
+    // Nothing to do here
+  }
+}
+
+let latlngView: Text
+
 export const renderMap = (container: HTMLDivElement) => {
   const map = L.map(container, {
     center: [53.418, 13.298],
     zoom: 14,
-  }).on('mousemove', () => {
-    // console.log('\u2295 ', e.latlng)
+  }).on('mousemove', (e) => {
+    latlngView.textContent = `\u2295 ${e.latlng.lat.toFixed(6)} ${e.latlng.lng.toFixed(6)}`
   })
   Model.layers.KARTE.addTo(map)
   Model.layers.ALKIS.addTo(map)
   Model.layers.FLURSTK.addTo(map)
-  L.control.layers(undefined, Model.layers).addTo(map)
-  L.control.zoom().remove()
+  L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
+  new LatLngControl({ position: 'bottomleft' }).addTo(map)
+  latlngView = document.getElementById('latlng-view')?.firstChild as Text
+  map.zoomControl.setPosition('bottomright')
+  L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
 }
 
 class LandMap extends Viewable implements LandUIListener {

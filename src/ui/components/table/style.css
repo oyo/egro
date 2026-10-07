@@ -1,10 +1,17 @@
-.filter {
+.filterbar {
   position: fixed;
-  padding: 2px;
+  display: flex;
+  flex-direction: row;
   width: 99%;
-  font-size: large;
+  font-size: 20px;
 }
-.filter::placeholder {
+
+.filterbar input {
+  flex: 1;
+  padding: 4px;
+  font-size: 16px;
+}
+.filterbar input::placeholder {
   padding-left: 10px;
   font-size: 12px;
   font-weight: bold;

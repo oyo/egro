@@ -31,7 +31,7 @@ class Blog extends Viewable {
       )
     )
       .join('\n\n')
-      .replace(/ href="([^"]{0,99})"/g, ` href="$1&key=${key}"`)
+      .replace(/ href="\.\?([^"]{0,99})"/g, ` href=".?key=${key}&$1"`)
     this.append(N('script', md, { type: 'text/markdown' }))
   }
 }

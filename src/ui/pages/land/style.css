@@ -72,3 +72,14 @@
 .land-details-item .use-gesamt {
   background-color: lightgray;
 }
+
+.leaflet-container.crosshair-cursor-enabled {
+  cursor: crosshair;
+}
+
+#latlng-view {
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 6px;
+  padding: 2px 6px;
+}

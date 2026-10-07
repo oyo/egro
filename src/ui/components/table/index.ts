@@ -5,6 +5,8 @@ import './style.css'
 import { addEvents, debounce, N } from '@/util/ui.js'
 import { typenameMap } from '@/shared/datautils/banking.js'
 
+const ARG_Q = 'account:q'
+
 const RE = {
   seq: /^#(\d{1,6}(,\d{1,6}){0,99})/,
   date: /^20[12]\d-/,
@@ -142,20 +144,19 @@ const render = (rows: BankingRow[]) => {
 }
 
 let dataTable: BankingRow[]
-const initExpr = pageArgs.get('q') ?? ''
+const initExpr = pageArgs.get(ARG_Q) ?? ''
 const renderFunction = (skipHistory?: boolean) => {
   const expr = filterInput.value
   render(filterRows(dataTable, expr))
   if (!skipHistory) {
-    if (expr.length === 0) pageArgs.delete('q')
-    else pageArgs.set('q', expr)
+    if (expr.length === 0) pageArgs.delete(ARG_Q)
+    else pageArgs.set(ARG_Q, expr)
     history.pushState({}, `EGRO - ${expr}`, `${location.pathname}?${pageArgs.toString()}`)
   }
 }
 const filterInput = addEvents(
   N('input', undefined, {
     autofocus: 'true',
-    class: 'filter',
     placeholder: '<filter>',
     value: initExpr,
   }),
@@ -165,10 +166,23 @@ const filterInput = addEvents(
     }, 250),
   },
 ) as HTMLInputElement
+const filterBar = N(
+  'div',
+  [
+    addEvents(N('button', '✖'), {
+      click: () => {
+        filterInput.value = ''
+        renderFunction()
+      },
+    }),
+    filterInput,
+  ],
+  { class: 'filterbar' },
+)
 const metrics = N('div')
 const tbody = N('tbody')
 const table = N('table', [tbody], { class: 'banking' })
-const view = N('div', [filterInput, metrics, table])
+const view = N('div', [filterBar, metrics, table])
 
 export function setFilterData(data: PaginTable) {
   dataTable = filterColumns(data)
