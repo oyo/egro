@@ -4,9 +4,9 @@ import LandList from './landList'
 import LandMap from './landMap'
 import { setLand } from '@/state/landSlice'
 import { store } from '@/state/store'
-import { fetchLatestStatic } from '@/util/data'
+import { fetchEncrypted } from '@/util/data'
 
-export const LandUIEventType = {
+export const LandUIEventType: Record<string, number> = {
   FILTER: 1,
   HOVER: 2,
   SELECT: 3,
@@ -35,7 +35,7 @@ export const LandUIState = {
   },
 }
 
-store.dispatch(setLand(await (await fetchLatestStatic('data/land.json')).json()))
+store.dispatch(setLand(JSON.parse(await fetchEncrypted('data/land.txt'))))
 
 class Land extends Viewable {
   constructor() {

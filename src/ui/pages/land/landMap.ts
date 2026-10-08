@@ -10,25 +10,7 @@ import Land, {
 } from './index'
 import { type FlstkInfo } from '@/state/landSlice'
 import { store } from '@/state/store'
-
-const geodesicArea = function (latLngs: L.LatLng[]) {
-  var pointsCount = latLngs.length,
-    area = 0.0,
-    d2r = Math.PI / 180,
-    p1,
-    p2
-
-  if (pointsCount > 2) {
-    for (var i = 0; i < pointsCount; i++) {
-      p1 = latLngs[i]
-      p2 = latLngs[(i + 1) % pointsCount]
-      area += (p2.lng - p1.lng) * d2r * (2 + Math.sin(p1.lat * d2r) + Math.sin(p2.lat * d2r))
-    }
-    area = (area * 6378137.0 * 6378137.0) / 2.0
-  }
-
-  return Math.abs(area)
-}
+import { geodesicArea } from '@/util/geo'
 
 const Model = {
   layers: {
@@ -176,8 +158,7 @@ class LandMap extends Viewable implements LandUIListener {
     const hoverPoly = polyMap[event.value]
     if (event.type === LandUIEventType.SELECT) {
       const latlngs = hoverPoly?.getLatLngs()[0] as L.LatLng[]
-      const area = geodesicArea(latlngs)
-      console.log('area: ' + area)
+      console.log(`area: ${Math.round(geodesicArea(latlngs))}`)
     }
     // @ts-expect-error
     hoverPoly?._path.setAttribute('fill-opacity', '0.5')

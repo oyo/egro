@@ -1,6 +1,6 @@
 import { addEvents, append, clear, N, Viewable } from '@/util/ui'
 import './style.css'
-import { type FlstkInfo } from '@/state/landSlice'
+import { flstkUseEmpty, type FlstkInfo } from '@/state/landSlice'
 import { store } from '@/state/store'
 import { LandUIEventType, LandUIState, type LandUIListener, type LandUIStateType } from '.'
 
@@ -38,7 +38,7 @@ class LandDetails extends Viewable {
       N(
         'table',
         N('tbody', [
-          ...Object.entries(info.use)
+          ...Object.entries({ ...flstkUseEmpty, ...info.use })
             .slice(1)
             .map((att) =>
               N('tr', [
@@ -124,6 +124,7 @@ class LandList extends Viewable implements LandUIListener {
 }
 
 const theLandList = new LandList()
+
 store.subscribe(() => {
   theLandList.list.clear()
   //const flstk = store.getState().land.flstk
