@@ -6,4 +6,4 @@ dist
 .env
 public/data/blog/history.md
 public/data/land.json
-src/asset/data/tbc.txt
+src/asset/data/tb.csv

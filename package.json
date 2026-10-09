@@ -1,6 +1,6 @@
 {
   "name": "egro",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -10,7 +10,7 @@
     "create:meta": "tsx ./src/script/create-meta.ts",
     "crypt:blog": "tsx --env-file .env ./src/script/crypt-blog.ts",
     "crypt:land": "tsx --env-file .env ./src/script/crypt-land.ts",
-    "crypt:keys": "tsx --env-file .env ./src/script/crypt-keys.ts"
+    "crypt:asset": "tsx --env-file .env ./src/script/crypt-asset.ts"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.13.0",
