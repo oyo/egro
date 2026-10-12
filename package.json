@@ -1,6 +1,6 @@
 {
   "name": "egro",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -16,11 +16,13 @@
     "drop.that": "^0.1.1",
     "leaflet": "^1.9.4",
     "lightweight-charts": "^5.2.1",
+    "shpjs": "^6.2.0",
     "zero-md": "^3.1.9"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.22",
     "@types/node": "^25.9.9",
+    "@types/shpjs": "^3.4.7",
     "tsx": "^4.23.15",
     "typescript": "~6.0.3",
     "vite": "npm:@voidzero-dev/vite-plus-core@^1.1.0",

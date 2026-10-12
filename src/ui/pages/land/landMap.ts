@@ -14,6 +14,7 @@ import {
   type LandUIListener,
   type LandUIStateType,
 } from '../../features/land'
+import shpjs from 'shpjs'
 
 interface PathPolygon extends L.Polygon {
   _path: SVGPathElement
@@ -39,11 +40,16 @@ const Model = {
       transparent: true,
     }),
     IMAGE: L.imageOverlay('img/flur.png', [
-      [53.39821871934239, 13.268116746445331],
-      [53.441046776220375, 13.339981969174893],
+      [53.398219, 13.268117],
+      [53.441047, 13.339982],
     ]),
     POINTS: L.layerGroup(),
     FLURSTK: L.featureGroup(),
+    SOLAR: L.imageOverlay('img/solar.jpeg', [
+      [53.398, 13.2821],
+      [53.4293, 13.321],
+    ]),
+    WIND: L.geoJson(await shpjs('data/wind.zip')),
   },
   points: [] as Array<[number, number]>,
   polyMap: {} as Record<string, L.Polygon<any> | null>,
@@ -143,6 +149,8 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
       }))
     Model.layers.KARTE.addTo(map)
     Model.layers.ALKIS.addTo(map)
+    Model.layers.SOLAR.addTo(map)
+    Model.layers.WIND.addTo(map)
     Model.layers.FLURSTK.addTo(map)
     map.zoomControl.setPosition('bottomright')
     HoverControl.addTo(map)
