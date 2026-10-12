@@ -2,11 +2,10 @@ import { BaselineSeries, createChart, type IChartApi } from 'lightweight-charts'
 import { N, Viewable } from '@/util/ui'
 import { defaultPaginMeta, type PaginTable } from '@/shared/types/data'
 import { setFilterValue } from '../table'
-import { store } from '@/state/store'
-import { selectPage, type NavOption } from '@/state/navSlice'
 import tb from '@/asset/data/tb.txt?raw'
 import './style.css'
 import { decryptData } from '@/ui/features/data'
+import { NavState } from '@/ui/features/nav'
 
 class ChartView extends Viewable {
   chart?: IChartApi
@@ -28,7 +27,7 @@ class ChartView extends Viewable {
     this.chart.subscribeClick((param) => {
       if (!param.point || !param.time) return
       setFilterValue(param.time as string)
-      store.dispatch(selectPage('account' as NavOption))
+      NavState.setPage('account')
     })
     const today = new Date().toISOString().substring(0, 10)
     const seriesWP = (await decryptData(tb.trim()))

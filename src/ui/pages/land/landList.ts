@@ -1,8 +1,15 @@
 import { addEvents, append, clear, N, Viewable } from '@/util/ui'
 import './style.css'
-import { flstkUseEmpty, type FlstkInfo } from '@/state/landSlice'
-import { store } from '@/state/store'
-import { LandUIEventType, LandUIState, type LandUIListener, type LandUIStateType } from '.'
+import {
+  flstkUseEmpty,
+  LandDataState,
+  LandUIEventType,
+  LandUIState,
+  type FlstkInfo,
+  type LandUIListener,
+  type LandUIStateType,
+} from '../../features/land'
+import LandFilter from './landFilter'
 
 class LandDetails extends Viewable {
   name: string
@@ -17,12 +24,12 @@ class LandDetails extends Viewable {
       }),
       {
         mouseover: () =>
-          LandUIState.action({
+          LandUIState.trigger({
             type: LandUIEventType.HOVER,
             value: this.name,
           }),
         click: () =>
-          LandUIState.action({
+          LandUIState.trigger({
             type: LandUIEventType.SELECT,
             value: this.name,
           }),
@@ -71,24 +78,17 @@ class LandListItem extends Viewable {
       }),
       {
         mouseover: () =>
-          LandUIState.action({
+          LandUIState.trigger({
             type: LandUIEventType.HOVER,
             value: name,
           }),
         click: () =>
-          LandUIState.action({
+          LandUIState.trigger({
             type: LandUIEventType.SELECT,
             value: name,
           }),
       },
     )
-  }
-}
-
-class LandListFilter extends Viewable {
-  constructor() {
-    super()
-    this.view = N('input')
   }
 }
 
@@ -100,15 +100,13 @@ class LandListList extends Viewable {
 }
 
 class LandList extends Viewable implements LandUIListener {
-  filter: LandListFilter
   list: LandListList
   details: LandDetails
   constructor() {
     super()
-    this.filter = new LandListFilter()
     this.list = new LandListList()
     this.details = new LandDetails()
-    this.view = N('div', [this.filter, this.list], { class: 'land-list' })
+    this.view = N('div', [LandFilter, this.list], { class: 'land-list' })
   }
   showDetails(flstk: FlstkInfo) {
     this.remove(this.list).remove(this.details)
@@ -118,17 +116,8 @@ class LandList extends Viewable implements LandUIListener {
     this.list.append(new LandListItem(flstk))
   }
   notifyLand(event: LandUIStateType) {
-    ;(this.filter.getView() as HTMLInputElement).value = event.value
-    this.showDetails(store.getState().land.flstk.info[event.value])
+    this.showDetails(LandDataState.state.info[event.value])
   }
 }
 
-const theLandList = new LandList()
-
-store.subscribe(() => {
-  theLandList.list.clear()
-  //const flstk = store.getState().land.flstk
-  //Object.values(flstk.info).forEach(theLandList.addFlstk.bind(theLandList))
-})
-
-export default theLandList
+export default new LandList()

@@ -4,7 +4,7 @@ import './style.css'
 import { addEvents, debounce, N } from '@/util/ui.js'
 import { typenameMap } from '@/shared/datautils/banking.js'
 
-const ARG_Q = 'account:q'
+const ARG_Q = 'account.q'
 
 const RE = {
   seq: /^#(\d{1,6}(,\d{1,6}){0,99})/,

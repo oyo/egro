@@ -1,5 +1,4 @@
-import { selectPage, type NavOption } from '@/state/navSlice'
-import { store } from '@/state/store'
+import { NavState, type NavOption } from '@/ui/features/nav'
 import { context, Pages } from '@/ui/nav'
 
 const args = new URLSearchParams(location.search)
@@ -28,7 +27,7 @@ export const rebase = () => {
   const page = getPageName()
   const normUrl = normPage(page)
   if (normUrl !== current) location.replace(normUrl)
-  else store.dispatch(selectPage(page))
+  else NavState.setPage(page)
 }
 
-addEventListener('popstate', (e) => store.dispatch(selectPage(e.state as NavOption)))
+addEventListener('popstate', (e) => NavState.setPage(e.state as NavOption))

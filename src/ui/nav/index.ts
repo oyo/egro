@@ -1,6 +1,4 @@
 import { addEvents, N, Viewable } from '@/util/ui'
-import { store } from '@/state/store'
-import { selectPage, type NavOption } from '@/state/navSlice'
 import Home from '../pages/home'
 import Account from '../pages/account'
 import Land from '../pages/land'
@@ -14,6 +12,7 @@ import toolsSvg from '@/asset/img/icon/tools.svg?raw'
 import { goTo, isAdmin } from '@/util/nav'
 import Chart from '../pages/chart'
 import './style.css'
+import { NavState, type NavListener, type NavOption } from '../features/nav'
 
 export const context = '/egro/'
 
@@ -39,7 +38,7 @@ export const Pages: Record<NavOption, Viewable> = {
   tools: Tools,
 }
 
-class NavSingle extends Viewable {
+class NavSingle extends Viewable implements NavListener {
   constructor() {
     super()
     this.view = N(
@@ -54,7 +53,7 @@ class NavSingle extends Viewable {
               addEvents(N('a', Icons[item as NavOption], { href: item }), {
                 click: (e) => {
                   e.preventDefault()
-                  store.dispatch(selectPage(item as NavOption))
+                  NavState.setPage(item as NavOption)
                 },
               }),
               { class: `nav-item ${item}` },
@@ -63,22 +62,23 @@ class NavSingle extends Viewable {
       ),
       { class: 'nav' },
     )
-    store.subscribe(() => {
-      const selected = store.getState().nav.selected as NavOption
-      const options = [...this.getView().firstChild!.childNodes]
-      goTo(selected)
-      Main.show(Pages[selected])
-      options.forEach((li) => {
-        const cl = (li as HTMLLIElement).classList
-        const svg = li.firstChild!.firstChild! as SVGElement
-        if (cl.contains(selected)) {
-          cl.add('selected')
-          svg.innerHTML = svg.innerHTML.replaceAll('#c0c0c0', '#404040')
-        } else {
-          cl.remove('selected')
-          svg.innerHTML = svg.innerHTML.replaceAll('#404040', '#c0c0c0')
-        }
-      })
+    NavState.subscribe(this)
+  }
+
+  showPage(page: NavOption) {
+    const options = [...this.getView().firstChild!.childNodes]
+    goTo(page)
+    Main.show(Pages[page])
+    options.forEach((li) => {
+      const cl = (li as HTMLLIElement).classList
+      const svg = li.firstChild!.firstChild! as SVGElement
+      if (cl.contains(page)) {
+        cl.add('selected')
+        svg.innerHTML = svg.innerHTML.replaceAll('#c0c0c0', '#404040')
+      } else {
+        cl.remove('selected')
+        svg.innerHTML = svg.innerHTML.replaceAll('#404040', '#c0c0c0')
+      }
     })
   }
 }

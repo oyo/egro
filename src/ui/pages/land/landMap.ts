@@ -1,20 +1,26 @@
 import { N, Viewable } from '@/util/ui'
 import './style.css'
-import L, { Control, Map } from 'leaflet'
+import L from 'leaflet'
 import Main from '@/ui/main'
-import Land, {
+import Land, { ARG_LAND_Q } from '.'
+import HoverControl from './landHoverControl'
+import {
+  LandDataState,
   LandUIEventType,
   LandUIState,
+  type FlstkInfo,
+  type LandData,
+  type LandDataListener,
   type LandUIListener,
   type LandUIStateType,
-} from './index'
-import { type FlstkInfo } from '@/state/landSlice'
-import { store } from '@/state/store'
-import { geodesicArea } from '@/util/geo'
+} from '../../features/land'
+
+interface PathPolygon extends L.Polygon {
+  _path: SVGPathElement
+}
 
 const Model = {
   layers: {
-    //KARTE: L.tileLayer.provider('OpenStreetMap.Mapnik'),
     KARTE: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -40,10 +46,8 @@ const Model = {
     FLURSTK: L.featureGroup(),
   },
   points: [] as Array<[number, number]>,
-  polygons: {} as Record<string, number[]>,
-  polygonCount: 0,
-  currentPoly: [],
-  hoverPoly: undefined,
+  polyMap: {} as Record<string, L.Polygon<any> | null>,
+  select: [] as Array<string>,
 }
 
 const addPoint = ([lng, lat]: [number, number]) => {
@@ -68,77 +72,51 @@ const addFlstk = (flstk: FlstkInfo): L.Polygon<any> | null => {
     {
       color: flstk.et === 1 || flstk.et === 2 ? '#008800' : '#ff8800',
       weight: 2,
+      className: 'map-flstk',
     },
   )
     .addTo(Model.layers.FLURSTK)
     .on('click', () => {
-      LandUIState.action({
+      const args = new URLSearchParams(location.search)
+      args.set(ARG_LAND_Q, fname)
+      history.pushState({}, `EGRO - ${fname}`, `${location.pathname}?${args.toString()}`)
+      LandUIState.trigger({
         type: LandUIEventType.SELECT,
         value: fname,
       })
     })
     .on('mouseover', () =>
-      LandUIState.action({
+      LandUIState.trigger({
         type: LandUIEventType.HOVER,
         value: fname,
       }),
     )
+    .on('mouseout', () =>
+      LandUIState.trigger({
+        type: LandUIEventType.HOVER,
+        value: '-',
+      }),
+    )
 }
 
-let polyMap: Record<string, L.Polygon<any> | null> = {}
-
-store.subscribe(() => {
-  Model.layers.POINTS.clearLayers()
-  Model.layers.FLURSTK.clearLayers()
-  const flstk = store.getState().land.flstk
-  flstk.coords.forEach(addPoint)
-  polyMap = Object.entries(flstk.info).reduce(
-    (a, c) => {
-      const f = c[1]
-      a[c[0]] = addFlstk(f)
-      return a
-    },
-    {} as Record<string, L.Polygon<any> | null>,
-  )
-})
-
-class LatLngControl extends Control {
-  onAdd(_map: Map) {
-    return N('div', '\u2295 0.0 , 0.0', { id: 'latlng-view' }) as HTMLElement
-  }
-  onRemove(_map: Map) {
-    // Nothing to do here
-  }
-}
-
-let latlngView: Text
-
-export const renderMap = (container: HTMLDivElement) => {
-  const map = L.map(container, {
-    center: [53.418, 13.298],
-    zoom: 14,
-  }).on('mousemove', (e) => {
-    latlngView.textContent = `\u2295 ${e.latlng.lat.toFixed(6)} ${e.latlng.lng.toFixed(6)}`
-  })
-  Model.layers.KARTE.addTo(map)
-  Model.layers.ALKIS.addTo(map)
-  Model.layers.FLURSTK.addTo(map)
-  L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
-  new LatLngControl({ position: 'bottomleft' }).addTo(map)
-  latlngView = document.getElementById('latlng-view')?.firstChild as Text
-  map.zoomControl.setPosition('bottomright')
-  L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
-}
-
-class LandMap extends Viewable implements LandUIListener {
+class LandMap extends Viewable implements LandDataListener, LandUIListener {
   observer: MutationObserver
+  map?: L.Map
+
   constructor() {
     super()
+    const link = N('link', undefined, {
+      rel: 'stylesheet',
+      href: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
+      integrity: 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=',
+      crossorigin: '',
+    })
+    ;[...document.getElementsByTagName('head')][0].appendChild(link)
     this.view = N('div')
     const callback: MutationCallback = (mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.type === 'childList' && [...mutation.addedNodes].includes(Land.getView())) {
-          renderMap(this.view as HTMLDivElement)
+          this.renderMap(this.view as HTMLDivElement)
           this.observer.disconnect()
         }
       }
@@ -148,20 +126,69 @@ class LandMap extends Viewable implements LandUIListener {
       childList: true,
       subtree: false,
     })
+    LandDataState.subscribe(this)
+    LandUIState.subscribe(this)
   }
+
+  renderMap(container: HTMLDivElement) {
+    const map = (this.map = L.map(container, {
+      center: [53.418, 13.298],
+      zoom: 14,
+    })
+      .on('mousemove', (e) => {
+        HoverControl.setLatLng(e.latlng)
+      })
+      .on('click', (e) => {
+        console.log([Number(e.latlng.lng.toFixed(6)), Number(e.latlng.lat.toFixed(6))])
+      }))
+    Model.layers.KARTE.addTo(map)
+    Model.layers.ALKIS.addTo(map)
+    Model.layers.FLURSTK.addTo(map)
+    map.zoomControl.setPosition('bottomright')
+    HoverControl.addTo(map)
+    L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
+    L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
+  }
+
+  hoverPoly(event: LandUIStateType) {
+    HoverControl.setFlstk(event.value)
+  }
+
+  filterPoly(event: LandUIStateType) {
+    Object.values(Model.polyMap).forEach((p) => {
+      const poly = (p as PathPolygon)?._path
+      if (poly) poly.classList.remove('select')
+    })
+    if (event.value) {
+      const lg = L.featureGroup()
+      event.value.split(',').forEach((f) => {
+        const p = Model.polyMap[f] as PathPolygon
+        if (p) {
+          p._path.classList.add('select')
+          lg.addLayer(p)
+        }
+      })
+      const bbox = lg.getBounds().pad(0.2)
+      this.map?.fitBounds(bbox!)
+    } else this.map?.fitBounds(Model.layers.FLURSTK.getBounds())
+  }
+
+  dataLoaded(data: LandData) {
+    Model.layers.POINTS.clearLayers()
+    Model.layers.FLURSTK.clearLayers()
+    data.coords.forEach(addPoint)
+    Model.polyMap = Object.entries(data.info).reduce(
+      (a, c) => ((a[c[0]] = addFlstk(c[1])), a),
+      {} as Record<string, L.Polygon<any> | null>,
+    )
+  }
+
   notifyLand(event: LandUIStateType) {
-    if (event.prevValue) {
-      const hoverPoly = polyMap[event.prevValue]
-      // @ts-expect-error
-      hoverPoly?._path.setAttribute('fill-opacity', '0.2')
-    }
-    const hoverPoly = polyMap[event.value]
-    if (event.type === LandUIEventType.SELECT) {
-      const latlngs = hoverPoly?.getLatLngs()[0] as L.LatLng[]
-      console.log(`area: ${Math.round(geodesicArea(latlngs))}`)
-    }
-    // @ts-expect-error
-    hoverPoly?._path.setAttribute('fill-opacity', '0.5')
+    ;({
+      [LandUIEventType.FILTER]: this.filterPoly.bind(this),
+      [LandUIEventType.HOVER]: this.hoverPoly.bind(this),
+      [LandUIEventType.SELECT]: this.filterPoly.bind(this),
+    })[event.type](event)
   }
 }
 

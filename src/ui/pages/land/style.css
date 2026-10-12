@@ -6,14 +6,33 @@
 
 .page.land > div {
   width: 100%;
-  height: 100%;
+}
+
+.land-filterbar {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  width: 25vw;
+  font-size: 20px;
+}
+
+.land-filterbar input {
+  flex: 1;
+  padding: 4px;
+  font-size: 16px;
+}
+.land-filterbar input::placeholder {
+  padding-left: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  opacity: 0.5;
+  color: #808080;
 }
 
 .land-list {
   position: absolute;
   left: 7vh;
   top: 1vh;
-  max-height: 98vh;
   max-width: 20vw;
   z-index: 99999;
   opacity: 1;
@@ -35,7 +54,6 @@
   margin-block-start: 0;
   margin-block-end: 0;
   padding-inline-start: 0;
-  height: 94vh;
   overflow: scroll;
 }
 
@@ -82,4 +100,32 @@
   border: 1px solid lightgray;
   border-radius: 6px;
   padding: 2px 6px;
+  font-size: 16px;
+}
+
+.map-flstk {
+  stroke-opacity: 0.15;
+  fill-opacity: 0.15;
+  z-index: 1;
+}
+
+.map-flstk:hover {
+  stroke-opacity: 0.5;
+  fill-opacity: 0.5;
+  z-index: 3;
+}
+
+.map-flstk.select {
+  stroke: white;
+  stroke-opacity: 0.8;
+  fill-opacity: 0.8;
+  z-index: 2;
+}
+
+.map-flstk.select:hover {
+  stroke: black;
+  stroke-opacity: 1;
+  stroke-width: 2px;
+  fill-opacity: 0.9;
+  z-index: 4;
 }

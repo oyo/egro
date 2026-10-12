@@ -2,40 +2,20 @@ import { N, Viewable } from '@/util/ui'
 import './style.css'
 import LandList from './landList'
 import LandMap from './landMap'
-import { setLand } from '@/state/landSlice'
-import { store } from '@/state/store'
 import { fetchEncrypted } from '@/util/data'
+import { LandDataState, LandUIEventType, LandUIState } from '../../features/land'
 
-export const LandUIEventType: Record<string, number> = {
-  FILTER: 1,
-  HOVER: 2,
-  SELECT: 3,
-}
+export const ARG_LAND_Q = 'land.q'
 
-export type LandUIStateType = {
-  type: number
-  value: string
-  prevValue?: string
-}
-
-export interface LandUIListener {
-  notifyLand: (event: LandUIStateType) => void
-}
-
-export const LandUIState = {
-  prev: [] as (string | undefined)[],
-  subscriber: [LandList, LandMap],
-  action: (event: LandUIStateType) => {
-    const pushEvent = {
-      ...event,
-      prevValue: LandUIState.prev[event.type],
-    }
-    LandUIState.subscriber.forEach((l) => l.notifyLand(pushEvent))
-    LandUIState.prev[event.type] = event.value
-  },
-}
-
-store.dispatch(setLand(JSON.parse(await fetchEncrypted('data/land.txt'))))
+LandDataState.setData(JSON.parse(await fetchEncrypted('data/land.txt')))
+setTimeout(() => {
+  const filter = new URLSearchParams(location.search).get(ARG_LAND_Q)
+  if (filter)
+    LandUIState.trigger({
+      type: LandUIEventType.FILTER,
+      value: filter,
+    })
+}, 500)
 
 class Land extends Viewable {
   constructor() {
