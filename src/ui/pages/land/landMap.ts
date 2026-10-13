@@ -138,7 +138,7 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
 
   renderMap(container: HTMLDivElement) {
     const map = (this.map = L.map(container, {
-      center: [53.418, 13.298],
+      center: [53.419, 13.3],
       zoom: 14,
     })
       .on('mousemove', (e) => {
@@ -148,9 +148,9 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
         console.log([Number(e.latlng.lng.toFixed(6)), Number(e.latlng.lat.toFixed(6))])
       }))
     Model.layers.KARTE.addTo(map)
-    Model.layers.ALKIS.addTo(map)
-    Model.layers.SOLAR.addTo(map)
-    Model.layers.WIND.addTo(map)
+    //Model.layers.ALKIS.addTo(map)
+    //Model.layers.SOLAR.addTo(map)
+    //Model.layers.WIND.addTo(map)
     Model.layers.FLURSTK.addTo(map)
     map.zoomControl.setPosition('bottomright')
     HoverControl.addTo(map)

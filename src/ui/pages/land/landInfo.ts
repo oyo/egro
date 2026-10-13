@@ -1,4 +1,4 @@
-import { addEvents, append, clear, N, Viewable } from '@/util/ui'
+import { addEvents, N, Viewable } from '@/util/ui'
 import './style.css'
 import {
   flstkUseEmpty,
@@ -13,56 +13,50 @@ import LandFilter from './landFilter'
 
 class LandDetails extends Viewable {
   name: string
-  use: HTMLDivElement
   constructor() {
     super()
     this.name = ''
-    this.use = N('div') as HTMLDivElement
     this.view = addEvents(
-      N('div', [N('div', this.name), this.use], {
+      N('table', undefined, {
         class: `land-details-item`,
       }),
       {
-        mouseover: () =>
-          LandUIState.trigger({
-            type: LandUIEventType.HOVER,
-            value: this.name,
-          }),
-        click: () =>
+        click: (() => {
+          console.log(this.name)
           LandUIState.trigger({
             type: LandUIEventType.SELECT,
             value: this.name,
-          }),
+          })
+        }).bind(this),
       },
     )
   }
+
   show(info: FlstkInfo) {
-    this.name = `${info.fs}${info.teil ? `/${info.teil} ` : ''}`
+    this.name = `${info.fs}${info.teil ? `/${info.teil}` : ''}`
     if (!info.use) return this
-    clear(this.use)
-    append(
-      this.use,
-      N(
-        'table',
-        N('tbody', [
-          ...Object.entries({ ...flstkUseEmpty, ...info.use })
-            .slice(1)
-            .map((att) =>
-              N('tr', [
-                N('td', att[0], { class: 'use-category' }),
-                N('td', att[1], { class: 'use-value' }),
-              ]),
-            ),
-          N(
-            'tr',
-            [
-              N('td', 'Gesamt', { class: 'use-category' }),
-              N('td', info.use.gesamt, { class: 'use-value' }),
-            ],
-            { class: 'use-gesamt' },
+    this.clear().append(
+      N('tbody', [
+        N('tr', [N('td', 'Flstk.-Nr.'), N('td', this.name, { class: 'flstk-name' })], {
+          class: 'flstk-info',
+        }),
+        ...Object.entries({ ...flstkUseEmpty, ...info.use })
+          .slice(1)
+          .map((att) =>
+            N('tr', [
+              N('td', att[0], { class: 'use-category' }),
+              N('td', att[1], { class: 'use-value' }),
+            ]),
           ),
-        ]),
-      ),
+        N(
+          'tr',
+          [
+            N('td', 'Gesamt', { class: 'use-category' }),
+            N('td', info.use.gesamt, { class: 'use-value' }),
+          ],
+          { class: 'use-gesamt' },
+        ),
+      ]),
     )
     return this
   }
@@ -92,32 +86,33 @@ class LandListItem extends Viewable {
   }
 }
 
-class LandListList extends Viewable {
+class LandList extends Viewable {
   constructor() {
     super()
     this.view = N('ul')
   }
 }
 
-class LandList extends Viewable implements LandUIListener {
-  list: LandListList
+class LandInfo extends Viewable implements LandUIListener {
+  list: LandList
   details: LandDetails
   constructor() {
     super()
-    this.list = new LandListList()
+    this.list = new LandList()
     this.details = new LandDetails()
-    this.view = N('div', [LandFilter, this.list], { class: 'land-list' })
+    this.view = N('div', [LandFilter, this.details], { class: 'land-info' })
+    LandUIState.subscribe(this)
   }
   showDetails(flstk: FlstkInfo) {
-    this.remove(this.list).remove(this.details)
     if (flstk?.use) this.append(this.details.show(flstk))
   }
   addFlstk(flstk: FlstkInfo) {
     this.list.append(new LandListItem(flstk))
   }
   notifyLand(event: LandUIStateType) {
-    this.showDetails(LandDataState.state.info[event.value])
+    this.remove(this.list).remove(this.details)
+    if (!event.value.includes(',')) this.showDetails(LandDataState.state.info[event.value])
   }
 }
 
-export default new LandList()
+export default new LandInfo()

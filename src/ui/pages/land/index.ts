@@ -1,6 +1,6 @@
 import { N, Viewable } from '@/util/ui'
 import './style.css'
-import LandList from './landList'
+import LandList from './landInfo'
 import LandMap from './landMap'
 import { fetchEncrypted } from '@/util/data'
 import { LandDataState, LandUIEventType, LandUIState } from '../../features/land'

@@ -8,12 +8,23 @@
   width: 100%;
 }
 
+.land-info {
+  position: absolute;
+  left: 7vh;
+  top: 1vh;
+  width: 260px;
+  max-width: 260px;
+  z-index: 9999;
+}
+
 .land-filterbar {
-  position: fixed;
   display: flex;
   flex-direction: row;
-  width: 25vw;
   font-size: 20px;
+}
+
+.land-filterbar button {
+  padding: 8px;
 }
 
 .land-filterbar input {
@@ -21,6 +32,7 @@
   padding: 4px;
   font-size: 16px;
 }
+
 .land-filterbar input::placeholder {
   padding-left: 10px;
   font-size: 12px;
@@ -29,26 +41,8 @@
   color: #808080;
 }
 
-.land-list {
-  position: absolute;
-  left: 7vh;
-  top: 1vh;
-  max-width: 20vw;
-  z-index: 99999;
-  opacity: 1;
-}
-
-.land-list:hover {
-  opacity: 1;
-}
-
-.land-list input {
-  height: 3vh;
-  font-size: 2vh;
-  width: 97%;
-}
-
-.land-list ul {
+.land-info ul {
+  width: 100%;
   margin-top: 2vh;
   list-style-type: none;
   margin-block-start: 0;
@@ -58,8 +52,19 @@
 }
 
 .land-list-item {
+  width: 100%;
   padding: 0.5vh;
   border: 1px solid lightgray;
+}
+
+.flstk-info {
+  background-color: #dddddd;
+  font-weight: bold;
+}
+
+.flstk-info > .flstk-name {
+  text-align: right;
+  font-weight: bold;
 }
 
 .own {
@@ -71,12 +76,13 @@
 }
 
 .land-details-item {
+  width: 100%;
   background-color: white;
 }
 
 .land-details-item td {
+  width: 50%;
   padding: 0.5vh;
-  width: 9vw;
 }
 
 .land-details-item .use-category {
