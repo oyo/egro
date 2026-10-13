@@ -6,6 +6,8 @@ import { fetchEncrypted } from '@/util/data'
 import { LandDataState, LandUIEventType, LandUIState } from '../../features/land'
 
 export const ARG_LAND_Q = 'land.q'
+export const ARG_LAND_MODE = 'land.mode'
+export type LandMode = 'edit' | 'view'
 
 LandDataState.setData(JSON.parse(await fetchEncrypted('data/land.txt')))
 setTimeout(() => {

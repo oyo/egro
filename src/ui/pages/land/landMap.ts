@@ -2,7 +2,7 @@ import { N, Viewable } from '@/util/ui'
 import './style.css'
 import L from 'leaflet'
 import Main from '@/ui/main'
-import Land, { ARG_LAND_Q } from '.'
+import Land, { ARG_LAND_MODE, ARG_LAND_Q, type LandMode } from '.'
 import HoverControl from './landHoverControl'
 import {
   LandDataState,
@@ -15,6 +15,7 @@ import {
   type LandUIStateType,
 } from '../../features/land'
 import shpjs from 'shpjs'
+import { findNearest, type Point } from '@/util/geo'
 
 interface PathPolygon extends L.Polygon {
   _path: SVGPathElement
@@ -52,11 +53,12 @@ const Model = {
     WIND: L.geoJson(await shpjs('data/wind.zip')),
   },
   points: [] as Array<[number, number]>,
+  pointMap: {} as Record<number, L.Circle>,
   polyMap: {} as Record<string, L.Polygon<any> | null>,
   select: [] as Array<string>,
 }
 
-const addPoint = ([lng, lat]: [number, number]) => {
+const addPoint = ([lng, lat]: [number, number], i: number) => {
   L.circle([lat, lng], {
     color: 'orange',
     weight: 0.5,
@@ -64,9 +66,8 @@ const addPoint = ([lng, lat]: [number, number]) => {
   })
     .addTo(Model.layers.POINTS)
     .on('click', () => {
-      console.log([lat, lng])
+      console.log(i, [lat, lng])
     })
-
   Model.points.push([lat, lng])
 }
 
@@ -106,8 +107,15 @@ const addFlstk = (flstk: FlstkInfo): L.Polygon<any> | null => {
 }
 
 class LandMap extends Viewable implements LandDataListener, LandUIListener {
+  mode: LandMode = 'view'
   observer: MutationObserver
   map?: L.Map
+  nearestPoint = 0
+  nearestCursor: L.Circle = L.circle([0, 0], {
+    color: 'red',
+    weight: 0.9,
+    radius: 4,
+  })
 
   constructor() {
     super()
@@ -141,21 +149,36 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
       center: [53.419, 13.3],
       zoom: 14,
     })
-      .on('mousemove', (e) => {
-        HoverControl.setLatLng(e.latlng)
-      })
+      .on(
+        'mousemove',
+        ((e: L.LeafletMouseEvent) => {
+          HoverControl.setLatLng(e.latlng)
+          if (this.mode === 'edit') {
+            this.nearestPoint = findNearest(Model.points, [e.latlng.lat, e.latlng.lng])
+            this.nearestCursor.setLatLng(Model.points[this.nearestPoint])
+          }
+        }).bind(this),
+      )
       .on('click', (e) => {
-        console.log([Number(e.latlng.lng.toFixed(6)), Number(e.latlng.lat.toFixed(6))])
+        const p: Point = [Number(e.latlng.lng.toFixed(6)), Number(e.latlng.lat.toFixed(6))]
+        console.log(p)
+        if (this.mode === 'edit') {
+          const d = LandDataState.state
+          d.coords[this.nearestPoint] = p
+          LandDataState.setData(d)
+        }
       }))
     Model.layers.KARTE.addTo(map)
-    //Model.layers.ALKIS.addTo(map)
+    Model.layers.ALKIS.addTo(map)
     //Model.layers.SOLAR.addTo(map)
     //Model.layers.WIND.addTo(map)
     Model.layers.FLURSTK.addTo(map)
+    //Model.layers.POINTS.addTo(map)
     map.zoomControl.setPosition('bottomright')
     HoverControl.addTo(map)
     L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
     L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
+    this.mode = new URLSearchParams(location.search).get(ARG_LAND_MODE) === 'edit' ? 'edit' : 'view'
   }
 
   hoverPoly(event: LandUIStateType) {
@@ -182,9 +205,11 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
   }
 
   dataLoaded(data: LandData) {
+    Model.points = []
     Model.layers.POINTS.clearLayers()
     Model.layers.FLURSTK.clearLayers()
     data.coords.forEach(addPoint)
+    Model.layers.POINTS.addLayer(this.nearestCursor)
     Model.polyMap = Object.entries(data.info).reduce(
       (a, c) => ((a[c[0]] = addFlstk(c[1])), a),
       {} as Record<string, L.Polygon<any> | null>,
