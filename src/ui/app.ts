@@ -9,6 +9,9 @@ import { setFilterData } from '@/ui/components/table'
 import { renderData } from '@/ui/components/chartButton'
 import './style.css'
 import chartView from './components/chartView'
+import { LandDataState, LandUIEventType, LandUIState } from './features/land'
+import { fetchEncrypted } from '@/util/data'
+import { ARG_LAND_Q } from './pages/land'
 
 const param = new URLSearchParams(location.search)
 const userkey = param.get('key')
@@ -29,6 +32,16 @@ if (store.banking.rows.length === 0) {
   await chartView.setData(store.banking)
   view = N('div', [Nav, Main], { class: 'app' }) as HTMLDivElement
 }
+
+LandDataState.setData(JSON.parse(await fetchEncrypted('data/land.txt')))
+setTimeout(() => {
+  const filter = new URLSearchParams(location.search).get(ARG_LAND_Q)
+  if (filter)
+    LandUIState.trigger({
+      type: LandUIEventType.FILTER,
+      value: filter,
+    })
+}, 500)
 
 class App extends Viewable {
   constructor() {
