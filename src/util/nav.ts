@@ -30,4 +30,10 @@ export const rebase = () => {
   else NavState.setPage(page)
 }
 
+export const linkTo = (args: Record<string, string>) =>
+  `.?${Object.entries(args).reduce(
+    (a, c) => (a.set(c[0], c[1]), a),
+    new URLSearchParams(location.search),
+  )}`
+
 addEventListener('popstate', (e) => NavState.setPage(e.state as NavOption))

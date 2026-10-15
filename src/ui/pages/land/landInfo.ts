@@ -10,6 +10,7 @@ import {
   type LandUIStateType,
 } from '../../features/land'
 import LandFilter from './landFilter'
+import { formatArea } from '@/util/format'
 
 class LandDetails extends Viewable {
   name: string
@@ -45,14 +46,14 @@ class LandDetails extends Viewable {
           .map((att) =>
             N('tr', [
               N('td', att[0], { class: 'use-category' }),
-              N('td', att[1], { class: 'use-value' }),
+              N('td', formatArea(att[1]), { class: 'use-value' }),
             ]),
           ),
         N(
           'tr',
           [
             N('td', 'Gesamt', { class: 'use-category' }),
-            N('td', info.use.gesamt, { class: 'use-value' }),
+            N('td', formatArea(info.use.gesamt), { class: 'use-value' }),
           ],
           { class: 'use-gesamt' },
         ),

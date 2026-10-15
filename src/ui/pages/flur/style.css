@@ -1,0 +1,27 @@
+.page.flur {
+  padding: 0;
+  margin: 0;
+}
+
+.flur-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.flur-table tr:first-child {
+  background-color: #c0c0c0;
+}
+
+.flur-table tr:hover {
+  background-color: #f8f8c0;
+}
+
+.flur-table th,
+.flur-table td {
+  padding: 4px;
+  text-align: right;
+}
+
+.flur-table .flur-use {
+  color: #a0a0a0;
+}

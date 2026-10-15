@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <defs>
+    <style>.flur{fill:none;stroke:#c0c0c0;stroke-width:3;}</style>
+  </defs>
+  <path class="flur" d="
+M 5 10 l 50 0
+M 2 20 l 56 0 l 0 10 l -56 0 z
+M 5 40 l 50 0
+M 5 50 l 50 0
+M 20 10 l 0 40
+M 40 10 l 0 40
+M 9 22 l -2 6
+M 15 22 l -2 6
+M 28 22 l -2 6
+M 34 22 l -2 6
+M 47 22 l -2 6
+M 53 22 l -2 6
+"/>
+</svg>

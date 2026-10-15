@@ -2,11 +2,13 @@ import { addEvents, N, Viewable } from '@/util/ui'
 import Home from '../pages/home'
 import Account from '../pages/account'
 import Land from '../pages/land'
+import Flur from '../pages/flur'
 import Tools from '../pages/tools'
 import Main from '../main'
 import homeSvg from '@/asset/img/icon/home.svg?raw'
 import accountSvg from '@/asset/img/icon/account.svg?raw'
 import chartSvg from '@/asset/img/icon/chart.svg?raw'
+import flurSvg from '@/asset/img/icon/flur.svg?raw'
 import landSvg from '@/asset/img/icon/land.svg?raw'
 import toolsSvg from '@/asset/img/icon/tools.svg?raw'
 import { goTo, isAdmin } from '@/util/nav'
@@ -27,6 +29,7 @@ const Icons: Record<NavOption, SVGElement> = {
   account: createIcon(accountSvg),
   chart: createIcon(chartSvg),
   land: createIcon(landSvg),
+  flur: createIcon(flurSvg),
   tools: createIcon(toolsSvg),
 }
 
@@ -35,6 +38,7 @@ export const Pages: Record<NavOption, Viewable> = {
   account: Account,
   chart: Chart,
   land: Land,
+  flur: Flur,
   tools: Tools,
 }
 

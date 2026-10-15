@@ -1,4 +1,4 @@
-export type NavOption = 'home' | 'account' | 'chart' | 'land' | 'tools'
+export type NavOption = 'home' | 'account' | 'chart' | 'land' | 'flur' | 'tools'
 
 export interface NavState {
   selected: string
