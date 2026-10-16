@@ -1,14 +1,12 @@
 import { N, Viewable } from '@/util/ui'
 import './style.css'
 
-class MainSingle extends Viewable {
+export class Content extends Viewable {
   constructor() {
     super()
-    this.view = N('section', undefined, { class: 'main' })
+    this.view = N('section', undefined, { class: 'content' })
   }
   show(page: Viewable) {
     this.clear().append(page)
   }
 }
-
-export default new MainSingle()

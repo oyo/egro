@@ -1,16 +1,9 @@
 import { addEvents, N, Viewable } from '@/util/ui'
 import './style.css'
-import {
-  flstkUseEmpty,
-  LandDataState,
-  LandUIEventType,
-  LandUIState,
-  type FlstkInfo,
-  type LandUIListener,
-  type LandUIStateType,
-} from '../../features/land'
+import { flstkUseEmpty, LandState, type FlstkInfo } from '@/shared/features/land'
 import LandFilter from './landFilter'
 import { formatArea } from '@/util/format'
+import { LandUIEventType, LandUIState, type LandUIStateType } from '@/shared/features/landui'
 
 class LandDetails extends Viewable {
   name: string
@@ -63,57 +56,22 @@ class LandDetails extends Viewable {
   }
 }
 
-class LandListItem extends Viewable {
-  constructor(info: FlstkInfo) {
-    super()
-    const name = `${info.fs}${info.teil ? `/${info.teil} ` : ''}`
-    this.view = addEvents(
-      N('li', info, {
-        class: `land-details-item ${info.et === 1 || info.et === 2 ? 'own' : 'nown'}`,
-      }),
-      {
-        mouseover: () =>
-          LandUIState.trigger({
-            type: LandUIEventType.HOVER,
-            value: name,
-          }),
-        click: () =>
-          LandUIState.trigger({
-            type: LandUIEventType.SELECT,
-            value: name,
-          }),
-      },
-    )
-  }
-}
-
-class LandList extends Viewable {
-  constructor() {
-    super()
-    this.view = N('ul')
-  }
-}
-
-class LandInfo extends Viewable implements LandUIListener {
-  list: LandList
+export class LandInfo extends Viewable {
   details: LandDetails
+
   constructor() {
     super()
-    this.list = new LandList()
     this.details = new LandDetails()
     this.view = N('div', [LandFilter, this.details], { class: 'land-info' })
-    LandUIState.subscribe(this)
+    LandUIState.subscribe(this.notifyEvent.bind(this))
   }
+
   showDetails(flstk: FlstkInfo) {
     if (flstk?.use) this.append(this.details.show(flstk))
   }
-  addFlstk(flstk: FlstkInfo) {
-    this.list.append(new LandListItem(flstk))
-  }
-  notifyLand(event: LandUIStateType) {
-    this.remove(this.list).remove(this.details)
-    if (!event.value.includes(',')) this.showDetails(LandDataState.state.info[event.value])
+
+  notifyEvent(event: LandUIStateType) {
+    this.remove(this.details)
+    if (!event.value.includes(',')) this.showDetails(LandState.state.info[event.value])
   }
 }
-
-export default new LandInfo()

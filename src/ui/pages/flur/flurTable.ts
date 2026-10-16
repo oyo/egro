@@ -1,20 +1,18 @@
-import {
-  LandDataState,
-  type FlstkInfo,
-  type LandData,
-  type LandDataListener,
-} from '@/ui/features/land'
+import { Crypt } from '@/shared/features/crypt'
+import { LandState, type FlstkInfo, type LandData } from '@/shared/features/land'
 import { formatArea } from '@/util/format'
 import { linkTo } from '@/util/nav'
 import { addEvents, N, Viewable } from '@/util/ui'
 
-class FlurTable extends Viewable implements LandDataListener {
+export class FlurTable extends Viewable {
   constructor() {
     super()
     this.view = N('table', undefined, { class: 'flur-table' })
-    LandDataState.subscribe(this)
+    LandState.subscribe(this.landLoaded.bind(this))
+    Crypt.subscribe(LandState.load)
   }
-  dataLoaded(data: LandData) {
+
+  landLoaded(data: LandData) {
     const a = formatArea
     this.append([
       N('tr', [
@@ -70,5 +68,3 @@ class FlurTable extends Viewable implements LandDataListener {
     ])
   }
 }
-
-export default new FlurTable()

@@ -1,5 +1,4 @@
 import type { Banking } from '../../shared/types/banking.js'
-
 import { cryptoUtils } from '@/shared/datautils/crypto.js'
 import fs from 'fs'
 

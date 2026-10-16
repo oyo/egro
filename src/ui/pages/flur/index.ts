@@ -1,11 +1,11 @@
 import { N, Viewable } from '@/util/ui'
-import FlurTable from './flurTable'
 import './style.css'
+import { FlurTable } from './flurTable'
 
-class Flur extends Viewable {
+export class Flur extends Viewable {
   constructor() {
     super()
-    this.view = N('pre', FlurTable, { class: 'page flur' })
+    this.view = N('pre', new FlurTable(), { class: 'page flur' })
   }
 }
 

@@ -1,21 +1,13 @@
 import { N, Viewable } from '@/util/ui'
 import './style.css'
 import L from 'leaflet'
-import Main from '@/ui/main'
-import Land, { ARG_LAND_MODE, ARG_LAND_Q, type LandMode } from '.'
+import { ARG_LAND_MODE, ARG_LAND_Q, type LandMode } from '.'
 import HoverControl from './landHoverControl'
-import {
-  LandDataState,
-  LandUIEventType,
-  LandUIState,
-  type FlstkInfo,
-  type LandData,
-  type LandDataListener,
-  type LandUIListener,
-  type LandUIStateType,
-} from '../../features/land'
 import shpjs from 'shpjs'
 import { findNearest, type Point } from '@/util/geo'
+import { LandState, type FlstkInfo, type LandData } from '@/shared/features/land'
+import { LandUIEventType, LandUIState, type LandUIStateType } from '@/shared/features/landui'
+import { args } from '@/util/nav'
 
 interface PathPolygon extends L.Polygon {
   _path: SVGPathElement
@@ -106,9 +98,8 @@ const addFlstk = (flstk: FlstkInfo): L.Polygon<any> | null => {
     )
 }
 
-class LandMap extends Viewable implements LandDataListener, LandUIListener {
+export class LandMap extends Viewable {
   mode: LandMode = 'view'
-  observer: MutationObserver
   map?: L.Map
   nearestPoint = 0
   nearestCursor: L.Circle = L.circle([0, 0], {
@@ -127,25 +118,11 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
     })
     ;[...document.getElementsByTagName('head')][0].appendChild(link)
     this.view = N('div')
-    const callback: MutationCallback = (mutationsList) => {
-      for (const mutation of mutationsList) {
-        if (mutation.type === 'childList' && [...mutation.addedNodes].includes(Land.getView())) {
-          this.renderMap(this.view as HTMLDivElement)
-          this.observer.disconnect()
-        }
-      }
-    }
-    this.observer = new MutationObserver(callback.bind(this))
-    this.observer.observe(Main.getView(), {
-      childList: true,
-      subtree: false,
-    })
-    LandDataState.subscribe(this)
-    LandUIState.subscribe(this)
+    LandUIState.subscribe(this.notifyEvent.bind(this))
   }
 
-  renderMap(container: HTMLDivElement) {
-    const map = (this.map = L.map(container, {
+  render() {
+    const map = (this.map = L.map(this.getView() as HTMLElement, {
       center: [53.419, 13.3],
       zoom: 14,
     })
@@ -163,9 +140,9 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
         const p: Point = [Number(e.latlng.lng.toFixed(6)), Number(e.latlng.lat.toFixed(6))]
         console.log(p)
         if (this.mode === 'edit') {
-          const d = LandDataState.state
+          const d = LandState.state
           d.coords[this.nearestPoint] = p
-          LandDataState.setData(d)
+          LandState.setData(d)
         }
       }))
     Model.layers.KARTE.addTo(map)
@@ -204,7 +181,7 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
     } else this.map?.fitBounds(Model.layers.FLURSTK.getBounds())
   }
 
-  dataLoaded(data: LandData) {
+  landLoaded(data: LandData) {
     Model.points = []
     Model.layers.POINTS.clearLayers()
     Model.layers.FLURSTK.clearLayers()
@@ -214,9 +191,16 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
       (a, c) => ((a[c[0]] = addFlstk(c[1])), a),
       {} as Record<string, L.Polygon<any> | null>,
     )
+    this.render()
+    const select = args.get(ARG_LAND_Q)
+    if (select)
+      LandUIState.trigger({
+        type: LandUIEventType.SELECT,
+        value: select,
+      })
   }
 
-  notifyLand(event: LandUIStateType) {
+  notifyEvent(event: LandUIStateType) {
     ;({
       [LandUIEventType.FILTER]: this.filterPoly.bind(this),
       [LandUIEventType.HOVER]: this.hoverPoly.bind(this),
@@ -224,5 +208,3 @@ class LandMap extends Viewable implements LandDataListener, LandUIListener {
     })[event.type](event)
   }
 }
-
-export default new LandMap()

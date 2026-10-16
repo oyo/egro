@@ -1,23 +1,25 @@
 import { BaselineSeries, createChart, type IChartApi } from 'lightweight-charts'
 import { N, Viewable } from '@/util/ui'
-import { defaultPaginMeta, type PaginTable } from '@/shared/types/data'
-import { setFilterValue } from '../table'
 import tb from '@/asset/data/tb.txt?raw'
 import './style.css'
-import { decryptData } from '@/ui/features/data'
-import { NavState } from '@/ui/features/nav'
+import { NavState } from '@/shared/features/nav'
+import { Crypt } from '@/shared/features/crypt'
+import { setFilterValue } from '@/ui/pages/account/accountTable'
+import { AccountState } from '@/shared/features/account'
 
-class ChartView extends Viewable {
+export class ChartView extends Viewable {
   chart?: IChartApi
-  data: PaginTable = { meta: defaultPaginMeta, headers: [], rows: [] }
+  rows: string[][] = []
 
   constructor() {
     super()
     this.view = N('div', undefined, { class: 'chart-view' })
+    AccountState.subscribe(this.setData.bind(this))
+    Crypt.subscribe(AccountState.load)
   }
 
-  async setData(data?: PaginTable) {
-    if (data) this.data = data
+  async setData(rows: string[][]) {
+    if (rows) this.rows = rows
     this.clear()
     const dim = {
       width: window.innerWidth * 0.96,
@@ -30,7 +32,7 @@ class ChartView extends Viewable {
       NavState.setPage('account')
     })
     const today = new Date().toISOString().substring(0, 10)
-    const seriesWP = (await decryptData(tb.trim()))
+    const seriesWP = (await Crypt.decryptData(tb.trim()))
       .split('\n')
       .map((r) => r.split(','))
       .map((r) => ({ time: r[0], value: Number(r[1]) }))
@@ -53,7 +55,7 @@ class ChartView extends Viewable {
     chartSeriesWP.setData(seriesWP)
     const series = [{ time: '2016-10-01', value: 0 }].concat(
       Object.values(
-        this.data.rows
+        this.rows
           .map((r) => ({
             time: r[1] as string,
             value: Number(r[6]),
@@ -89,5 +91,3 @@ class ChartView extends Viewable {
     })
   }
 }
-
-export default new ChartView()

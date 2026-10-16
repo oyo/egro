@@ -1,4 +1,4 @@
-import { formatNumber } from '../../../util/format'
+import { formatNumber } from '../../../../util/format'
 import type { CandlestickEntry } from '.'
 import { N } from '@/util/ui'
 

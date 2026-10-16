@@ -1,6 +1,6 @@
 {
   "name": "egro",
-  "version": "0.0.32",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
@@ -13,7 +13,6 @@
     "crypt:keys": "tsx --env-file .env ./src/script/crypt-keys.ts"
   },
   "dependencies": {
-    "drop.that": "^0.1.1",
     "leaflet": "^1.9.4",
     "lightweight-charts": "^5.2.1",
     "shpjs": "^6.2.0",

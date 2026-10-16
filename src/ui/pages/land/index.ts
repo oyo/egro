@@ -1,17 +1,20 @@
 import { N, Viewable } from '@/util/ui'
 import './style.css'
-import LandList from './landInfo'
-import LandMap from './landMap'
+import { LandMap } from './landMap'
+import { Crypt } from '@/shared/features/crypt'
+import { LandState } from '@/shared/features/land'
+import { LandInfo } from './landInfo'
 
 export const ARG_LAND_Q = 'land.q'
 export const ARG_LAND_MODE = 'land.mode'
 export type LandMode = 'edit' | 'view'
 
-class Land extends Viewable {
+export class Land extends Viewable {
   constructor() {
     super()
-    this.view = N('div', [LandMap, LandList], { class: 'page land' })
+    const map = new LandMap()
+    this.view = N('div', [map, new LandInfo()], { class: 'page land' })
+    Crypt.subscribe(LandState.load)
+    LandState.subscribe(map.landLoaded.bind(map))
   }
 }
-
-export default new Land()

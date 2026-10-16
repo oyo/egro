@@ -65,7 +65,7 @@ const prepareData = (data: number[][]) =>
 const chart = N('div', undefined, { class: 'chart-button-graph' })
 const view = N('div', [chart, tooltip], { class: 'chart-button' })
 
-export const renderData = (data: PaginTable) => {
+export const setChartData = (data: PaginTable) => {
   chart.innerHTML = renderChart(
     prepareData(
       data.rows.reverse().map((r) => [

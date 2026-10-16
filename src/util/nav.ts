@@ -1,9 +1,7 @@
-import { NavState, type NavOption } from '@/ui/features/nav'
-import { context, Pages } from '@/ui/nav'
+import { NavState, type NavOption } from '@/shared/features/nav'
+import { context, Pages } from '@/ui/components/nav'
 
-const args = new URLSearchParams(location.search)
-
-export const isAdmin = () => args.get('key')?.endsWith('1qv4xob1p3d')
+export const args = new URLSearchParams(location.search)
 
 export const getPageName = (): NavOption => {
   const page = args.get('page') ?? location.pathname.split('/').slice(2).join('/')

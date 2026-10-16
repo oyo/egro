@@ -1,8 +1,7 @@
 import { readFileSync, writeFileSync } from 'fs'
-import { decryptData, encryptData } from '@/ui/features/data'
 import { chunks } from '@/util/data'
+import { Crypt } from '@/shared/features/crypt'
 
-const gkey = process.env.KEY_GLOBAL
 const path = 'public/data/blog/history'
 
 const oldCrypt = readFileSync(`${path}.txt`, { encoding: 'utf-8' })
@@ -14,7 +13,7 @@ const oldCrypt = readFileSync(`${path}.txt`, { encoding: 'utf-8' })
 const oldClear = await Object.entries(oldCrypt).reduce(
   async (a, c) => {
     const prev = await a
-    prev[c[0]] = (await decryptData(c[1], gkey)).trim()
+    prev[c[0]] = (await Crypt.decryptData(c[1])).trim()
     return prev
   },
   Promise.resolve({} as Record<string, string>),
@@ -43,7 +42,10 @@ console.log(changed)
 
 const newCrypt = (
   await Promise.all(
-    newClear.map(async (r) => [r[0], changed[r[0]] ? await encryptData(r[1]) : oldCrypt[r[0]]]),
+    newClear.map(async (r) => [
+      r[0],
+      changed[r[0]] ? await Crypt.encryptData(r[1]) : oldCrypt[r[0]],
+    ]),
   )
 )
   .map((r) => r.join())

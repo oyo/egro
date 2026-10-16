@@ -1,12 +1,7 @@
-import {
-  LandUIEventType,
-  LandUIState,
-  type LandUIListener,
-  type LandUIStateType,
-} from '@/ui/features/land'
+import { LandUIEventType, LandUIState, type LandUIStateType } from '@/shared/features/landui'
 import { addEvents, debounce, N, Viewable } from '@/util/ui'
 
-class LandFilter extends Viewable implements LandUIListener {
+class LandFilter extends Viewable {
   filterInput: HTMLInputElement
   selectInputText: boolean = true
 
@@ -32,10 +27,10 @@ class LandFilter extends Viewable implements LandUIListener {
       ],
       { class: 'land-filterbar' },
     )
-    LandUIState.subscribe(this)
+    LandUIState.subscribe(this.notifyEvent.bind(this))
   }
 
-  notifyLand(event: LandUIStateType) {
+  notifyEvent(event: LandUIStateType) {
     if (event.type === LandUIEventType.HOVER) return
     if (!this.selectInputText) {
       this.selectInputText = true

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
   base: '/egro/',
+  define: { 'process.env': {} },
   resolve: {
     alias: {
       '@': '/src',
