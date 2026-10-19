@@ -32,8 +32,7 @@ const renderChart = (
         `<path id="chart-${y.key}" value="${JSON.stringify(y).replaceAll(
           '"',
           '|',
-        )}" class="bar ${y.begin > y.end ? 'n' : 'p'}" d="M ${i * XD} ${y.min} l 0 ${y.max - y.min} M ${i * XD - 10} ${y.begin} l 10 0 M ${i * XD} ${y.end} l 10 0"></path>
-`,
+        )}" class="bar ${y.begin > y.end ? 'n' : 'p'}" d="M ${i * XD} ${y.min} l 0 ${y.max - y.min} M ${i * XD - 10} ${y.begin} l 10 0 M ${i * XD} ${y.end} l 10 0" />`,
     )
     .join('')}</g></g></svg>`
 
@@ -77,20 +76,17 @@ export const setChartData = (data: PaginTable) => {
       ]),
     ),
   )
-  setTimeout(
-    () =>
-      [...document.getElementsByClassName('bar')].forEach((b) => {
-        b.addEventListener('mouseover', (e) =>
-          showTooltip(
-            JSON.parse(
-              ((e.target! as SVGPathElement).getAttribute('value') ?? '').replaceAll('|', '"'),
-            ),
-          ),
-        )
-        b.addEventListener('mouseout', hideTooltip)
-      }),
-    2000,
-  )
+  const bars = chart.firstChild?.lastChild?.lastChild?.childNodes ?? []
+  ;[...bars].forEach((b) => {
+    b.addEventListener('mouseover', (e) =>
+      showTooltip(
+        JSON.parse(
+          ((e.target! as SVGPathElement).getAttribute('value') ?? '').replaceAll('|', '"'),
+        ),
+      ),
+    )
+    b.addEventListener('mouseout', hideTooltip)
+  })
 }
 
 export default view

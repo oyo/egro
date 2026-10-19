@@ -116,7 +116,7 @@ export class LandMap extends Viewable {
       integrity: 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=',
       crossorigin: '',
     })
-    ;[...document.getElementsByTagName('head')][0].appendChild(link)
+    document.head.appendChild(link)
     this.view = N('div')
     LandUIState.subscribe(this.notifyEvent.bind(this))
     NavState.subscribe(this.notifyNav.bind(this))
