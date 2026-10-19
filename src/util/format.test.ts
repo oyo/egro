@@ -2,25 +2,42 @@ import { describe, expect, it } from 'vite-plus/test'
 import { formatArea, formatNumber } from './format'
 
 type FormatTestType = {
-  op: (v?: number) => string
   input: number
   output: string
 }
 
-const tdata: Record<string, FormatTestType> = {
+type FormatType = {
+  op: (v?: number) => string
+  tval: Array<FormatTestType>
+}
+
+const tdata: Record<string, FormatType> = {
   number: {
     op: formatNumber,
-    input: 1234567.8,
-    output: '+1.234.567,80',
+    tval: [
+      {
+        input: 1234567.8,
+        output: '+1.234.567,80',
+      },
+    ],
   },
   area: {
     op: formatArea,
-    input: 123456,
-    output: '12 34 56',
+    tval: [
+      {
+        input: 123456,
+        output: '12 34 56',
+      },
+      {
+        input: 1234567,
+        output: '123 45 67',
+      },
+    ],
   },
 }
 
 describe('format', () =>
   Object.keys(tdata).forEach((key) =>
-    it(`formats ${key}`, () => expect(tdata[key].op(tdata[key].input)).toBe(tdata[key].output)),
+    it(`formats ${key}`, () =>
+      tdata[key].tval.forEach((tv) => expect(tdata[key].op(tv.input)).toBe(tv.output))),
   ))

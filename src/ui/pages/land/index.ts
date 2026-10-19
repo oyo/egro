@@ -13,11 +13,11 @@ export class Land extends Viewable {
   constructor() {
     super()
     const map = new LandMap()
-    this.view = N('div', [map, new LandInfo()], { class: 'page land' })
+    this.view = N('div', new LandInfo(), { class: 'page land' })
+    LandState.subscribe(map.landLoaded.bind(map))
     Crypt.subscribe(() => {
       map.appendTo(document.body).init().appendTo(this)
       void LandState.load()
     })
-    LandState.subscribe(map.landLoaded.bind(map))
   }
 }

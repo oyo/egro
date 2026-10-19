@@ -13,8 +13,7 @@ export const utcToDisplayTime = (t: string): string =>
     new Date(t),
   )
 
-export const formatArea = (a?: number) =>
-  (a ?? '')
-    .toString()
-    .padStart(6, ' ')
-    .replace(/\B(?=(\d{2})+(?!\d))/g, ' ')
+export const formatArea = (a?: number) => {
+  const af = (a ?? '').toString().padStart(6, ' ')
+  return af.substring(0, af.length - 6) + af.slice(-6).replace(/\B(?=(\d{2})+(?!\d))/g, ' ')
+}

@@ -10,9 +10,14 @@
 
 .flur-table tr:first-child {
   background-color: #c0c0c0;
+  cursor: pointer;
 }
 
-.flur-table tr:hover {
+.flur-table tr:nth-child(2) {
+  background-color: #c0f0ff;
+}
+
+.flur-table tr:not(:first-child):hover {
   background-color: #f8f8c0;
 }
 
@@ -22,6 +27,19 @@
   text-align: right;
 }
 
+.flur-table .flur-gb {
+  color: gray;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.flur-table .flur-fs,
+.flur-table .flur-teil {
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .flur-table .flur-use {
   color: #a0a0a0;
+  font-size: 10px;
 }

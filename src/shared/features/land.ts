@@ -1,18 +1,6 @@
 import { fetchEncrypted } from '@/util/data'
 
-export type FlstkUse = {
-  gesamt: number
-  acker?: number
-  gruen?: number
-  forst?: number
-  garten?: number
-  oed?: number
-  un?: number
-  wasser?: number
-  weg?: number
-  hof?: number
-  grund?: number
-}
+export type FlstkUse = Record<string, number>
 
 export type FlstkInfo = {
   fs: number
@@ -57,7 +45,7 @@ export const LandState = {
 
   subscribe: (listener: LandListener) => {
     LandState.subscriber = [...new Set([...LandState.subscriber, listener])]
-    if (LandState.state.keys.length > 0) listener(LandState.state)
+    if (LandState.hasData()) listener(LandState.state)
     return LandState
   },
 
@@ -67,8 +55,9 @@ export const LandState = {
     LandState.subscriber.forEach((l) => l(data))
   },
 
+  hasData: () => LandState.state.keys.length > 0,
+
   fetch: async () => JSON.parse(await fetchEncrypted('data/land.txt')),
 
-  load: async () =>
-    LandState.setData(LandState.state.keys.length > 0 ? LandState.state : await LandState.fetch()),
+  load: async () => (LandState.hasData() ? undefined : LandState.setData(await LandState.fetch())),
 }

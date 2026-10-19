@@ -8,5 +8,3 @@ export class Flur extends Viewable {
     this.view = N('pre', new FlurTable(), { class: 'page flur' })
   }
 }
-
-export default new Flur()
