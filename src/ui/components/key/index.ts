@@ -1,10 +1,10 @@
 import { addEvents, N } from '@/util/ui'
 import { Crypt } from '@/shared/features/crypt'
-import './style.css'
 import { args } from '@/util/nav'
 
 const keyPrefix = 'egro_'
 const keyPattern = /^(egro_)?[a-zA-Z0-9]{22}$/
+import './style.css'
 
 const keyValid = async (): Promise<boolean> =>
   new Promise((resolve) => {
@@ -37,18 +37,12 @@ const keyValid = async (): Promise<boolean> =>
       location.href = `${location.pathname}?${args.toString()}`
     }
 
-    const validateKey = async (userkey: string): Promise<void> => {
-      const valid = await Crypt.validKey(userkey)
-      if (!valid) showKeyInput()
-      resolve(true)
+    const checkKey = async (userkey: string): Promise<void> => {
+      if (keyPattern.test(userkey) && (await Crypt.validKey(userkey))) resolve(true)
+      else showKeyInput()
     }
 
-    const userkey = args.get('key')
-    if (!(userkey && keyPattern.test(userkey))) {
-      showKeyInput()
-    } else {
-      void validateKey(userkey)
-    }
+    void checkKey(args.get('key') ?? '')
   })
 
 export { keyValid }

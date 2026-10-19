@@ -7,6 +7,6 @@ export class App extends Viewable {
   constructor() {
     super()
     const content = new Content()
-    this.view = N('div', [new Nav(content), content], { class: 'app' }) as HTMLDivElement
+    this.view = N('div', [new Nav(content), content], { class: 'app' })
   }
 }

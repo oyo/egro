@@ -9,6 +9,7 @@ export const BlogState = {
 
   subscribe: (listener: BlogListener) => {
     BlogState.subscriber.add(listener)
+    if (BlogState.state.length > 0) listener(BlogState.state)
     return BlogState
   },
 

@@ -57,6 +57,7 @@ export const LandState = {
 
   subscribe: (listener: LandListener) => {
     LandState.subscriber = [...new Set([...LandState.subscriber, listener])]
+    if (LandState.state.keys.length > 0) listener(LandState.state)
     return LandState
   },
 

@@ -8,6 +8,7 @@ export const NavState = {
 
   subscribe: (listener: NavListener) => {
     NavState.subscriber = [...new Set([...NavState.subscriber, listener])]
+    if (NavState.state !== 'home') listener(NavState.state)
     return NavState
   },
 

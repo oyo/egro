@@ -20,14 +20,6 @@ export const goTo = (page: string) => {
   document.title = `egro - ${page}`
 }
 
-export const rebase = () => {
-  const current = `${location.pathname}${location.search}${location.hash}`
-  const page = getPageName()
-  const normUrl = normPage(page)
-  if (normUrl !== current) location.replace(normUrl)
-  else NavState.setPage(page)
-}
-
 export const linkTo = (args: Record<string, string>) =>
   `.?${Object.entries(args).reduce(
     (a, c) => (a.set(c[0], c[1]), a),
