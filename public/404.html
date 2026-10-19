@@ -5,10 +5,9 @@
   </head>
   <body>
     <script>
-      const base = '/egro/'
+      const pt = location.pathname.split('/')
       location.replace(
-        `${base}?page=${location.pathname
-          .split('/')
+        `/${pt[1]}/?page=${pt
           .slice(2)
           .join('/')}${location.search.replace(/^\?/, '&')}${location.hash}`,
       )
