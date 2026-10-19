@@ -8,6 +8,7 @@ import { findNearest, type Point } from '@/util/geo'
 import { LandState, type FlstkInfo, type LandData } from '@/shared/features/land'
 import { LandUIEventType, LandUIState, type LandUIStateType } from '@/shared/features/landui'
 import { args } from '@/util/nav'
+import { NavState, type NavOption } from '@/shared/features/nav'
 
 interface PathPolygon extends L.Polygon {
   _path: SVGPathElement
@@ -76,7 +77,6 @@ const addFlstk = (flstk: FlstkInfo): L.Polygon<any> | null => {
   )
     .addTo(Model.layers.FLURSTK)
     .on('click', () => {
-      const args = new URLSearchParams(location.search)
       args.set(ARG_LAND_Q, fname)
       history.pushState({}, `EGRO - ${fname}`, `${location.pathname}?${args.toString()}`)
       LandUIState.trigger({
@@ -119,9 +119,10 @@ export class LandMap extends Viewable {
     ;[...document.getElementsByTagName('head')][0].appendChild(link)
     this.view = N('div')
     LandUIState.subscribe(this.notifyEvent.bind(this))
+    NavState.subscribe(this.notifyNav.bind(this))
   }
 
-  render() {
+  init() {
     const map = (this.map = L.map(this.getView() as HTMLElement, {
       center: [53.419, 13.3],
       zoom: 14,
@@ -146,7 +147,7 @@ export class LandMap extends Viewable {
         }
       }))
     Model.layers.KARTE.addTo(map)
-    Model.layers.ALKIS.addTo(map)
+    //Model.layers.ALKIS.addTo(map)
     //Model.layers.SOLAR.addTo(map)
     //Model.layers.WIND.addTo(map)
     Model.layers.FLURSTK.addTo(map)
@@ -155,7 +156,8 @@ export class LandMap extends Viewable {
     HoverControl.addTo(map)
     L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
     L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
-    this.mode = new URLSearchParams(location.search).get(ARG_LAND_MODE) === 'edit' ? 'edit' : 'view'
+    this.mode = args.get(ARG_LAND_MODE) === 'edit' ? 'edit' : 'view'
+    return this
   }
 
   hoverPoly(event: LandUIStateType) {
@@ -191,7 +193,6 @@ export class LandMap extends Viewable {
       (a, c) => ((a[c[0]] = addFlstk(c[1])), a),
       {} as Record<string, L.Polygon<any> | null>,
     )
-    this.render()
     const select = args.get(ARG_LAND_Q)
     if (select)
       LandUIState.trigger({
@@ -206,5 +207,9 @@ export class LandMap extends Viewable {
       [LandUIEventType.HOVER]: this.hoverPoly.bind(this),
       [LandUIEventType.SELECT]: this.filterPoly.bind(this),
     })[event.type](event)
+  }
+
+  notifyNav(_page: NavOption) {
+    //
   }
 }

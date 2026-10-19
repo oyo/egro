@@ -3,6 +3,7 @@ import { type DataValue, type PaginTable } from '../../../shared/types/data.js'
 import './style.css'
 import { addEvents, debounce, N } from '@/util/ui.js'
 import { typenameMap } from '@/shared/datautils/banking.js'
+import { args } from '@/util/nav.js'
 
 const ARG_Q = 'account.q'
 
@@ -34,8 +35,6 @@ interface BankingRow {
   name: string
   type: string
 }
-
-const pageArgs = new URLSearchParams(location.search)
 
 const filterColumns = (table: PaginTable) =>
   table.rows.map(
@@ -144,14 +143,14 @@ const render = (rows: BankingRow[]) => {
 }
 
 let dataTable: BankingRow[]
-const initExpr = pageArgs.get(ARG_Q) ?? ''
+const initExpr = args.get(ARG_Q) ?? ''
 const renderFunction = (skipHistory?: boolean) => {
   const expr = filterInput.value
   render(filterRows(dataTable, expr))
   if (!skipHistory) {
-    if (expr.length === 0) pageArgs.delete(ARG_Q)
-    else pageArgs.set(ARG_Q, expr)
-    history.pushState({}, `EGRO - ${expr}`, `${location.pathname}?${pageArgs.toString()}`)
+    if (expr.length === 0) args.delete(ARG_Q)
+    else args.set(ARG_Q, expr)
+    history.pushState({}, `EGRO - ${expr}`, `${location.pathname}?${args.toString()}`)
   }
 }
 const filterInput = addEvents(

@@ -1,6 +1,7 @@
 import { addEvents, N } from '@/util/ui'
 import { Crypt } from '@/shared/features/crypt'
 import './style.css'
+import { args } from '@/util/nav'
 
 const keyPrefix = 'egro_'
 const keyPattern = /^(egro_)?[a-zA-Z0-9]{22}$/
@@ -32,9 +33,8 @@ const keyValid = async (): Promise<boolean> =>
       let key = (e.target as HTMLInputElement).value
       if (key.startsWith(keyPrefix)) key = key.substring(keyPrefix.length)
       if (key.length < 22) return
-      const param = new URLSearchParams(location.search)
-      param.set('key', key)
-      location.href = `${location.pathname}?${param.toString()}`
+      args.set('key', key)
+      location.href = `${location.pathname}?${args.toString()}`
     }
 
     const validateKey = async (userkey: string): Promise<void> => {
@@ -43,8 +43,7 @@ const keyValid = async (): Promise<boolean> =>
       resolve(true)
     }
 
-    const param = new URLSearchParams(location.search)
-    const userkey = param.get('key')
+    const userkey = args.get('key')
     if (!(userkey && keyPattern.test(userkey))) {
       showKeyInput()
     } else {

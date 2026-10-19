@@ -5,7 +5,7 @@ import chartSvg from '@/asset/img/icon/chart.svg?raw'
 import flurSvg from '@/asset/img/icon/flur.svg?raw'
 import landSvg from '@/asset/img/icon/land.svg?raw'
 import { getPageName, goTo } from '@/util/nav'
-import { NavState, type NavListener, type NavOption } from '@/shared/features/nav'
+import { NavState, type NavOption } from '@/shared/features/nav'
 import { Content } from '@/ui/components/content'
 import './style.css'
 import { Home } from '@/ui/pages/home'
@@ -38,7 +38,7 @@ export const Pages: Record<NavOption, Viewable> = {
   flur: new Flur(),
 }
 
-export class Nav extends Viewable implements NavListener {
+export class Nav extends Viewable {
   content: Content
   constructor(content: Content) {
     super()
@@ -62,7 +62,7 @@ export class Nav extends Viewable implements NavListener {
       ),
       { class: 'nav' },
     )
-    NavState.subscribe(this).setPage(getPageName())
+    NavState.subscribe(this.showPage.bind(this)).setPage(getPageName())
   }
 
   showPage(page: NavOption) {

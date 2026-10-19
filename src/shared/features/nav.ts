@@ -1,12 +1,6 @@
 export type NavOption = 'home' | 'account' | 'chart' | 'land' | 'flur'
 
-export interface NavState {
-  selected: string
-}
-
-export interface NavListener {
-  showPage: (page: NavOption) => void
-}
+export type NavListener = (page: NavOption) => void
 
 export const NavState = {
   state: 'home' as NavOption,
@@ -17,5 +11,5 @@ export const NavState = {
     return NavState
   },
 
-  setPage: (page: NavOption) => NavState.subscriber.forEach((l) => l.showPage(page)),
+  setPage: (page: NavOption) => NavState.subscriber.forEach((l) => l(page)),
 }
