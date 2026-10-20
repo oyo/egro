@@ -27,29 +27,33 @@ class LandDetails extends Viewable {
   }
 
   show(info: FlstkInfo) {
+    if (!info) return this
     this.name = `${info.fs}${info.teil ? `/${info.teil}` : ''}`
-    if (!info.use) return this
     this.clear().append(
       N('tbody', [
         N('tr', [N('td', 'Flstk.-Nr.'), N('td', this.name, { class: 'flstk-name' })], {
           class: 'flstk-info',
         }),
-        ...Object.entries({ ...flstkUseEmpty, ...info.use })
-          .slice(1)
-          .map((att) =>
-            N('tr', [
-              N('td', att[0], { class: 'use-category' }),
-              N('td', formatArea(att[1]), { class: 'use-value' }),
-            ]),
-          ),
-        N(
-          'tr',
-          [
-            N('td', 'Gesamt', { class: 'use-category' }),
-            N('td', formatArea(info.use.gesamt), { class: 'use-value' }),
-          ],
-          { class: 'use-gesamt' },
-        ),
+        ...(info.use
+          ? [
+              ...Object.entries({ ...flstkUseEmpty, ...info.use })
+                .slice(1)
+                .map((att) =>
+                  N('tr', [
+                    N('td', att[0], { class: 'use-category' }),
+                    N('td', formatArea(att[1]), { class: 'use-value' }),
+                  ]),
+                ),
+              N(
+                'tr',
+                [
+                  N('td', 'Gesamt', { class: 'use-category' }),
+                  N('td', formatArea(info.use.gesamt), { class: 'use-value' }),
+                ],
+                { class: 'use-gesamt' },
+              ),
+            ]
+          : []),
       ]),
     )
     return this
@@ -67,7 +71,7 @@ export class LandInfo extends Viewable {
   }
 
   showDetails(flstk: FlstkInfo) {
-    if (flstk?.use) this.append(this.details.show(flstk))
+    this.append(this.details.show(flstk))
   }
 
   notifyEvent(event: LandUIStateType) {

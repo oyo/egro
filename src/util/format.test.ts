@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vite-plus/test'
-import { formatArea, formatNumber } from './format'
+import { formatArea, formatDate, formatNumber } from './format'
 
 type FormatTestType = {
   input: number
@@ -18,6 +18,15 @@ const tdata: Record<string, FormatType> = {
       {
         input: 1234567.8,
         output: '+1.234.567,80',
+      },
+    ],
+  },
+  date: {
+    op: formatDate,
+    tval: [
+      {
+        input: 261031,
+        output: '26-10-31',
       },
     ],
   },

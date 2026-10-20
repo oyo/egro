@@ -1,4 +1,4 @@
-export type NavOption = 'home' | 'account' | 'chart' | 'land' | 'flur'
+export type NavOption = 'home' | 'account' | 'chart' | 'land' | 'flur' | 'docs'
 
 export type NavListener = (page: NavOption) => void
 

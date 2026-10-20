@@ -4,6 +4,7 @@ import accountSvg from '@/asset/img/icon/account.svg?raw'
 import chartSvg from '@/asset/img/icon/chart.svg?raw'
 import flurSvg from '@/asset/img/icon/flur.svg?raw'
 import landSvg from '@/asset/img/icon/land.svg?raw'
+import docsSvg from '@/asset/img/icon/docs.svg?raw'
 import { getPageName, goTo } from '@/util/nav'
 import { NavState, type NavOption } from '@/shared/features/nav'
 import { Content } from '@/ui/components/content'
@@ -13,6 +14,7 @@ import { Flur } from '@/ui/pages/flur'
 import { Land } from '@/ui/pages/land'
 import { Account } from '@/ui/pages/account'
 import { Chart } from '@/ui/pages/chart'
+import { Docs } from '@/ui/pages/docs'
 
 export const context = '/egro/'
 
@@ -28,6 +30,7 @@ const Icons: Record<NavOption, SVGElement> = {
   chart: createIcon(chartSvg),
   land: createIcon(landSvg),
   flur: createIcon(flurSvg),
+  docs: createIcon(docsSvg),
 }
 
 export const Pages: Record<NavOption, Viewable> = {
@@ -36,6 +39,7 @@ export const Pages: Record<NavOption, Viewable> = {
   chart: new Chart(),
   land: new Land(),
   flur: new Flur(),
+  docs: new Docs(),
 }
 
 export class Nav extends Viewable {

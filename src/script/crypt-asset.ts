@@ -1,14 +1,26 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { Crypt } from '@/shared/features/crypt'
 
-const paths = ['public/data/land.json', 'src/asset/data/tb.csv']
+const paths = [
+  'public/data/docs/2016.csv',
+  'public/data/docs/2022.csv',
+  'public/data/docs/2025.csv',
+  'public/data/docs/2026.csv',
+  'public/data/land.json',
+  'src/asset/data/tb.csv',
+]
 
 paths.forEach(async (path) => {
   const [prefix, suffix] = path.split(/\./)
-  const oldCrypt = readFileSync(`${prefix}.txt`, { encoding: 'utf-8' })
-  const oldCompress = await Crypt.decryptData(oldCrypt)
+  let oldCompress = ''
+  try {
+    const oldCrypt = readFileSync(`${prefix}.txt`, { encoding: 'utf-8' })
+    oldCompress = await Crypt.decryptData(oldCrypt)
+  } catch {
+    // ignore
+  }
 
-  const plain = readFileSync(path, { encoding: 'utf-8' })
+  const plain = readFileSync(path, { encoding: 'utf-8' }).trim()
   const compress = suffix === 'json' ? JSON.stringify(JSON.parse(plain)) : plain
 
   const diff = compress.localeCompare(oldCompress)

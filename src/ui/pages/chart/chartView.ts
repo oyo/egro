@@ -15,7 +15,6 @@ export class ChartView extends Viewable {
     super()
     this.view = N('div', undefined, { class: 'chart-view' })
     AccountState.subscribe(this.setData.bind(this))
-    Crypt.subscribe(AccountState.load)
   }
 
   async setData(rows: string[][]) {

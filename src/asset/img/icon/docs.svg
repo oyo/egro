@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <defs>
+    <style>.docs{fill:none;stroke:#c0c0c0;stroke-width:2;}</style>
+  </defs>
+  <path class="docs" d="
+M 10 4 l 40 0 l 0 54 l -40 0 z
+M 16 13 l 14 0 l 0 8 l -14 0 z
+M 20 58 a 22 12 0 0 0 22 -12 a 5 6 0 0 0 8 -4
+M 20 58 a 25 8 0 0 0 25 -7 a 4 5 0 0 0 5 -4
+M 20 58 a 27 8 0 0 0 27 -3 a 4 5 0 0 0 2 -4
+M 45 10 l -6 0
+M 45 12 l -9 0
+M 45 14 l -8 0
+M 45 27 l -5 0
+M 16 31 l 15 0
+M 16 36 l 22 0
+M 16 38 l 25 0
+M 16 40 l 24 0
+M 16 42 l 12 0
+M 16 46 l 8 0
+M 16 48 l 10 0
+"/>
+</svg>
