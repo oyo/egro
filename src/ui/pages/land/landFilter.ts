@@ -1,7 +1,7 @@
 import { LandUIEventType, LandUIState, type LandUIStateType } from '@/shared/features/landui'
 import { addEvents, debounce, N, Viewable } from '@/util/ui'
 
-class LandFilter extends Viewable {
+export class LandFilter extends Viewable {
   filterInput: HTMLInputElement
   selectInputText: boolean = true
 
@@ -58,5 +58,3 @@ class LandFilter extends Viewable {
     this.setFilterValue('')
   }
 }
-
-export default new LandFilter()

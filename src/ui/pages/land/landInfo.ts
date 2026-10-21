@@ -1,7 +1,7 @@
 import { addEvents, N, Viewable } from '@/util/ui'
 import './style.css'
 import { flstkUseEmpty, LandState, type FlstkInfo } from '@/shared/features/land'
-import LandFilter from './landFilter'
+import { LandFilter } from './landFilter'
 import { formatArea } from '@/util/format'
 import { LandUIEventType, LandUIState, type LandUIStateType } from '@/shared/features/landui'
 
@@ -66,7 +66,7 @@ export class LandInfo extends Viewable {
   constructor() {
     super()
     this.details = new LandDetails()
-    this.view = N('div', [LandFilter, this.details], { class: 'land-info' })
+    this.view = N('div', [new LandFilter(), this.details], { class: 'land-info' })
     LandUIState.subscribe(this.notifyEvent.bind(this))
   }
 

@@ -4,6 +4,8 @@ import { Crypt } from '@/shared/features/crypt'
 const paths = [
   'public/data/docs/2016.csv',
   'public/data/docs/2022.csv',
+  'public/data/docs/2023.csv',
+  'public/data/docs/2024.csv',
   'public/data/docs/2025.csv',
   'public/data/docs/2026.csv',
   'public/data/land.json',

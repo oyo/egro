@@ -20,7 +20,11 @@ export const DocsState = {
   },
 
   fetch: async (): Promise<string[][]> =>
-    (await Promise.all([2016, 2022, 2025, 2026].map((y) => fetchEncrypted(`data/docs/${y}.txt`))))
+    (
+      await Promise.all(
+        [2016, 2022, 2023, 2024, 2025, 2026].map((y) => fetchEncrypted(`data/docs/${y}.txt`)),
+      )
+    )
       .join('\n')
       .split(/\n/)
       .reverse()

@@ -1,24 +1,23 @@
 .page.docs {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 0;
   margin: 0;
   height: 100vh;
 }
 
-ul.docs-list {
+ul.docs-list,
+ul.docs-group {
   list-style-type: none;
   padding-inline-start: 0;
   margin-block-start: 0;
   margin-block-end: 0;
 }
 
-.docs-list li.docs-item a {
+li.docs-item a {
   cursor: pointer;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0px;
+  display: flex;
+  flex-direction: column;
   margin: 6px;
   padding: 12px;
   border-radius: 10px;
@@ -26,28 +25,31 @@ ul.docs-list {
   background-color: #f0f0f0;
 }
 
-.docs-list li.docs-item a:hover {
+li.docs-item a:hover {
   background-color: #e0e0e0;
 }
 
-.docs-date {
-  grid-column: span 1 / span 1;
+li.docs-item span {
+  margin: 2px;
+}
+
+.docs-year {
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  text-align: center;
   color: #c0c0c0;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .docs-from {
-  grid-column: span 5 / span 5;
   color: gray;
   font-weight: bold;
   font-size: 11px;
 }
 
 .docs-link {
-  grid-column: span 5 / span 5;
-  grid-column-start: 2;
-  grid-row-start: 2;
   color: #0080c0;
   font-size: 18px;
 }

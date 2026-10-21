@@ -3,7 +3,7 @@ import { Control, LatLng, Map } from 'leaflet'
 
 const LEN = 4
 
-class HoverControl extends Control {
+export class HoverControl extends Control {
   view: HTMLElement = N('div') as HTMLElement
   latlng: L.LatLng = new LatLng(0, 0)
   flstk: string = '-'
@@ -29,5 +29,3 @@ class HoverControl extends Control {
     this.updateView()
   }
 }
-
-export default new HoverControl({ position: 'bottomleft' })

@@ -1,14 +1,14 @@
-import { N, Viewable } from '@/util/ui'
-import './style.css'
 import L from 'leaflet'
-import { ARG_LAND_MODE, ARG_LAND_Q, type LandMode } from '.'
-import HoverControl from './landHoverControl'
 import shpjs from 'shpjs'
+import { N, Viewable } from '@/util/ui'
+import { ARG_LAND_MODE, ARG_LAND_Q, type LandMode } from '.'
+import { HoverControl } from './landHoverControl'
 import { findNearest, type Point } from '@/util/geo'
 import { LandState, type FlstkInfo, type LandData } from '@/shared/features/land'
 import { LandUIEventType, LandUIState, type LandUIStateType } from '@/shared/features/landui'
 import { args } from '@/util/nav'
 import { NavState, type NavOption } from '@/shared/features/nav'
+import './style.css'
 
 interface PathPolygon extends L.Polygon {
   _path: SVGPathElement
@@ -101,6 +101,7 @@ const addFlstk = (flstk: FlstkInfo): L.Polygon<any> | null => {
 export class LandMap extends Viewable {
   mode: LandMode = 'view'
   map?: L.Map
+  hoverControl = new HoverControl({ position: 'bottomleft' })
   nearestPoint = 0
   nearestCursor: L.Circle = L.circle([0, 0], {
     color: 'red',
@@ -130,7 +131,7 @@ export class LandMap extends Viewable {
       .on(
         'mousemove',
         ((e: L.LeafletMouseEvent) => {
-          HoverControl.setLatLng(e.latlng)
+          this.hoverControl.setLatLng(e.latlng)
           if (this.mode === 'edit') {
             this.nearestPoint = findNearest(Model.points, [e.latlng.lat, e.latlng.lng])
             this.nearestCursor.setLatLng(Model.points[this.nearestPoint])
@@ -153,7 +154,7 @@ export class LandMap extends Viewable {
     Model.layers.FLURSTK.addTo(map)
     //Model.layers.POINTS.addTo(map)
     map.zoomControl.setPosition('bottomright')
-    HoverControl.addTo(map)
+    this.hoverControl.addTo(map)
     L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
     L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
     this.mode = args.get(ARG_LAND_MODE) === 'edit' ? 'edit' : 'view'
@@ -161,7 +162,7 @@ export class LandMap extends Viewable {
   }
 
   hoverPoly(event: LandUIStateType) {
-    HoverControl.setFlstk(event.value)
+    this.hoverControl.setFlstk(event.value)
   }
 
   filterPoly(event: LandUIStateType) {
