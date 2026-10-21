@@ -13,7 +13,7 @@ export class FilterBar extends Viewable {
     this.filterInput = addEvents(
       N('input', undefined, {
         autofocus: 'true',
-        placeholder: '<filter>',
+        placeholder: 'filtern z.B. Haus 2024',
         value: '',
       }),
       {
