@@ -7,7 +7,8 @@
     "build": "tsc && vp build",
     "preview": "vp preview",
     "prepare": "vp config",
-    "create": "tsx --env-file .env ./src/script/create.ts",
+    "create:meta": "tsx ./src/script/create-meta.ts",
+    "crypt:asset": "tsx --env-file .env ./src/script/crypt-asset.ts",
     "crypt:keys": "tsx --env-file .env ./src/script/crypt-keys.ts"
   },
   "dependencies": {

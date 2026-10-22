@@ -38,3 +38,5 @@ export const createMeta = async () => {
   )
   console.log(`${output} written`)
 }
+
+await createMeta()

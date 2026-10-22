@@ -1,5 +1,6 @@
 import fs from 'fs'
 import { Crypt } from '@/shared/features/crypt'
+import { cryptBlog } from './crypt-blog'
 
 export const cryptAsset = async () => {
   const paths = ['public/data/docs/', 'public/data/land.json', 'src/asset/data/tb.csv']
@@ -36,3 +37,6 @@ export const cryptAsset = async () => {
       : await cryptFile(path),
   )
 }
+
+await cryptBlog()
+await cryptAsset()
