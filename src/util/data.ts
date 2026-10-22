@@ -4,7 +4,16 @@ import { Crypt } from '@/shared/features/crypt'
 
 const release = meta as Release
 
-export const fetchLatestStatic = (path: string) => fetch(`${path}?${release.hash[path] ?? ''}`)
+export const fetchLatestStatic = (path: string) => {
+  try {
+    return fetch(`${path}?${release.hash[path] ?? ''}`)
+  } catch {
+    return {
+      text: () => 'error',
+      json: () => '"error"',
+    }
+  }
+}
 
 export const fetchEncrypted = async (path: string) =>
   await Crypt.decryptData(await (await fetchLatestStatic(path)).text())

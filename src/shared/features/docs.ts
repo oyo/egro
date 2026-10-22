@@ -1,4 +1,7 @@
 import { fetchEncrypted } from '@/util/data'
+import meta from '@/asset/data/meta.json'
+
+const includePattern = /^data\/docs\/\d{4}\.txt$/
 
 export type DocsData = string[]
 
@@ -22,7 +25,9 @@ export const DocsState = {
   fetch: async (): Promise<string[][]> =>
     (
       await Promise.all(
-        [2016, 2022, 2023, 2024, 2025, 2026].map((y) => fetchEncrypted(`data/docs/${y}.txt`)),
+        Object.keys(meta.hash)
+          .filter((f) => includePattern.test(f))
+          .map(fetchEncrypted),
       )
     )
       .join('\n')

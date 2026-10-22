@@ -1,5 +1,27 @@
 {
-  "build": "2000-01-01T00:00:00.000Z",
-  "version": "0.0.0",
-  "hash": {}
+  "version": "0.1.8",
+  "build": "2026-10-22T03:11:25.303Z",
+  "hash": {
+    "data/blog/history.txt": "8932d7b29231cf7951a132ce8995d91b",
+    "data/docs/2013.txt": "83e282ff87a2c87940f9521b93448690",
+    "data/docs/2015.txt": "3dd24eb8bbb96d4ccfeb659d8c8e9dff",
+    "data/docs/2016.txt": "0b0f3bc5fa6b362b1458aebe3d1c943b",
+    "data/docs/2022.txt": "dce77b0187f7cfa2f184ee3628a01599",
+    "data/docs/2023.txt": "8ec0319b66255ec166d563d701015fdd",
+    "data/docs/2024.txt": "14ea8cbdf981b8ffa872f156b239fad9",
+    "data/docs/2025.txt": "abb0dcebf1de1d5ce6af622c9576cd22",
+    "data/docs/2026.txt": "330339a1734dfe6e0261baf786240c76",
+    "data/land.txt": "ed19634055ef6e2df2800fde9ebf8d59",
+    "data/ta/2016.txt": "e56952cec8c722da0c94c755ff9f4b77",
+    "data/ta/2017.txt": "d5bad3ff63abec105a06ef5691ac6259",
+    "data/ta/2018.txt": "4cb3d3856cd32171e5b9dc24ddfff68c",
+    "data/ta/2019.txt": "fc3e28cb1febcb6bd06a7e02bc2c95df",
+    "data/ta/2020.txt": "1fc4210beb19c47bfb9f1d63499f0c69",
+    "data/ta/2021.txt": "a00792b8f30dca8a4e94244c943c5bbc",
+    "data/ta/2022.txt": "991084e80eeb4e7dfd24c7605296acd7",
+    "data/ta/2023.txt": "1ee3d8fa5d8245c558888c6a6aeb2c05",
+    "data/ta/2024.txt": "fd8edff4f834e4e17720b8b30d8e0a88",
+    "data/ta/2025.txt": "e1182bccc9d10eea012b3efb84cdc146",
+    "data/ta/2026.txt": "3c37636a62cb1bc09525e059aef507d1"
+  }
 }

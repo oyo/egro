@@ -7,4 +7,5 @@ dist
 public/data/blog/history.md
 public/data/docs/*.csv
 public/data/land.json
+src/asset/data/meta.json
 src/asset/data/tb.csv
