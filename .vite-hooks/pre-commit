@@ -1,2 +1,3 @@
+vp run crypt:asset
 vp run create:meta
 vp staged
