@@ -20,6 +20,7 @@ const Model = {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }),
+    /*
     ALKIS: L.tileLayer.wms('https://www.geodaten-mv.de/dienste/alkis_wms', {
       layers: [
         'adv_alkis_tatsaechliche_nutzung',
@@ -33,6 +34,7 @@ const Model = {
       maxZoom: 26,
       transparent: true,
     }),
+    */
     IMAGE: L.imageOverlay('img/flur.png', [
       [53.398219, 13.268117],
       [53.441047, 13.339982],
