@@ -1,6 +1,6 @@
 {
-  "version": "0.1.8",
-  "build": "2026-10-22T04:37:54.233Z",
+  "version": "0.1.9",
+  "build": "2026-10-28T07:07:28.506Z",
   "hash": {
     "data/blog/history.txt": "531e21a2d11383227dc105951712f82b",
     "data/docs/2013.txt": "cc5e50737bcc1f30d2070797fe06362d",
@@ -23,6 +23,6 @@
     "data/ta/2023.txt": "1ee3d8fa5d8245c558888c6a6aeb2c05",
     "data/ta/2024.txt": "fd8edff4f834e4e17720b8b30d8e0a88",
     "data/ta/2025.txt": "e1182bccc9d10eea012b3efb84cdc146",
-    "data/ta/2026.txt": "3c37636a62cb1bc09525e059aef507d1"
+    "data/ta/2026.txt": "83909b1fc0fe9bfc25f4354d38f9f0ae"
   }
 }
