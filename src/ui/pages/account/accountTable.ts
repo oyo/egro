@@ -37,17 +37,15 @@ interface BankingRow {
 }
 
 const filterColumns = (table: PaginTable) =>
-  table.rows.map(
-    (row: DataValue[]): BankingRow => ({
-      seq: Number(row[0]),
-      amnt: Number(row[5]),
-      blnc: Number(row[6]),
-      date: row[1] as string,
-      desc: row[4] as string,
-      name: row[2] as string,
-      type: row[3] as string,
-    }),
-  )
+  table.rows.map((row: DataValue[]): BankingRow => ({
+    seq: Number(row[0]),
+    amnt: Number(row[5]),
+    blnc: Number(row[6]),
+    date: row[1] as string,
+    desc: row[4] as string,
+    name: row[2] as string,
+    type: row[3] as string,
+  }))
 
 const filterRows = (rows: BankingRow[], expr: string) => {
   const re = new RegExp(`(${expr})`, 'i')
