@@ -1,6 +1,6 @@
 export const formatNumber = (n?: number): string =>
   !n
-    ? ''
+    ? '0,00'
     : (n < 0 ? '' : '+') +
       n
         .toFixed(2)

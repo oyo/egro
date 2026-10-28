@@ -158,10 +158,6 @@ export class LandMap extends Viewable {
     L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
     L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
     this.mode = args.get(ARG_LAND_MODE) === 'edit' ? 'edit' : 'view'
-    setTimeout(() => {
-      const flag = document.getElementsByClassName('leaflet-attribution-flag')[0]
-      flag.parentElement?.removeChild(flag)
-    }, 1000)
     return this
   }
 

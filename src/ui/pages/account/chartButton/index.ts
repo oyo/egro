@@ -52,6 +52,11 @@ const aggregate = (keys: number[], data: number[][]): CandlestickEntry[] => {
       max,
     }
   })
+  a.forEach((v, i) => {
+    v.begin = a[i - 1]?.end ?? 0
+    v.min = Math.min(v.min, v.begin)
+    v.max = Math.max(v.max, v.begin)
+  })
   return a
 }
 
