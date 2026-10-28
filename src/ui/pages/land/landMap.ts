@@ -20,7 +20,6 @@ const Model = {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }),
-    /*
     ALKIS: L.tileLayer.wms('https://www.geodaten-mv.de/dienste/alkis_wms', {
       layers: [
         'adv_alkis_tatsaechliche_nutzung',
@@ -34,18 +33,17 @@ const Model = {
       maxZoom: 26,
       transparent: true,
     }),
-    */
-    IMAGE: L.imageOverlay('img/flur.png', [
+    ALKIS_ABB: L.imageOverlay('img/flur.png', [
       [53.398219, 13.268117],
       [53.441047, 13.339982],
     ]),
-    POINTS: L.layerGroup(),
     FLURSTK: L.featureGroup(),
-    SOLAR: L.imageOverlay('img/solar.jpeg', [
-      [53.398, 13.2821],
-      [53.4293, 13.321],
-    ]),
+    //SOLAR: L.imageOverlay('img/solar.jpeg', [
+    //  [53.398, 13.2821],
+    //  [53.4293, 13.321],
+    //]),
     WIND: L.geoJson(await shpjs('data/wind.zip')),
+    POINTS: L.layerGroup(),
   },
   points: [] as Array<[number, number]>,
   pointMap: {} as Record<number, L.Circle>,
@@ -160,6 +158,10 @@ export class LandMap extends Viewable {
     L.control.layers(undefined, Model.layers, { position: 'topright' }).addTo(map)
     L.DomUtil.addClass(map.getContainer(), 'crosshair-cursor-enabled')
     this.mode = args.get(ARG_LAND_MODE) === 'edit' ? 'edit' : 'view'
+    setTimeout(() => {
+      const flag = document.getElementsByClassName('leaflet-attribution-flag')[0]
+      flag.parentElement?.removeChild(flag)
+    }, 1000)
     return this
   }
 

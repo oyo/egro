@@ -9,3 +9,4 @@ public/data/docs/*.csv
 public/data/land.json
 src/asset/data/meta.json
 src/asset/data/tb.csv
+.vitest/
