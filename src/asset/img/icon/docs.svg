@@ -2,6 +2,7 @@
   <defs>
     <style>.docs{fill:none;stroke:#c0c0c0;stroke-width:2;}</style>
   </defs>
+<g transform="translate(30,30)rotate(-4)translate(-30,-30)">
   <path class="docs" d="
 M 10 4 l 40 0 l 0 54 l -40 0 z
 M 16 13 l 14 0 l 0 8 l -14 0 z
@@ -20,4 +21,5 @@ M 16 42 l 12 0
 M 16 46 l 8 0
 M 16 48 l 10 0
 "/>
+</g>
 </svg>

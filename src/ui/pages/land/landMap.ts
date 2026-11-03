@@ -20,28 +20,51 @@ const Model = {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }),
+    //LUFTBILD: L.tileLayer(
+    //  'https://www.geodaten-mv.de/dienste/dop_wmts/wmts/mv_dop/ETRS89UTM33/{z}/{x}/{y}.png',
+    //),
     ALKIS: L.tileLayer.wms('https://www.geodaten-mv.de/dienste/alkis_wms', {
       layers: [
         'adv_alkis_tatsaechliche_nutzung',
-        //,'adv_alkis_gesetzl_festlegungen'
-        //,'adv_alkis_weiteres'
+        'adv_alkis_gesetzl_festlegungen',
+        'adv_alkis_weiteres',
         'adv_alkis_gebaeude',
         'adv_alkis_flurstuecke',
       ].join(),
       format: 'image/png',
-      minZoom: 12,
-      maxZoom: 26,
+      minZoom: 16,
+      maxZoom: 22,
       transparent: true,
+      attribution: '© GeoBasis-DE/M-V 2026',
     }),
     ALKIS_ABB: L.imageOverlay('img/flur.png', [
       [53.398219, 13.268117],
       [53.441047, 13.339982],
     ]),
-    FLURSTK: L.featureGroup(),
-    //SOLAR: L.imageOverlay('img/solar.jpeg', [
-    //  [53.398, 13.2821],
-    //  [53.4293, 13.321],
-    //]),
+    FLURSTÜCK: L.featureGroup(),
+    FELDBLOCK: L.tileLayer.wms('https://www.geodaten-mv.de/dienste/gdimv_feldblock', {
+      layers: ['gdimv_feldblock', 'nbf_flaechen', 'landschaftselemente', 'feldbloecke'].join(),
+      format: 'image/png',
+      minZoom: 13,
+      maxZoom: 18,
+      transparent: true,
+    }),
+    BEDECKUNG: L.tileLayer.wms('https://sgx.geodatenzentrum.de/wms_lb-de', {
+      layers: ['2023_lb_de'].join(),
+      format: 'image/png',
+      transparent: true,
+    }),
+    ÖFFENTLICH: L.tileLayer.wms('https://www.geodaten-mv.de/dienste/alkis_oee_wms', {
+      layers: [
+        'alkis_oee_wms',
+        'oee_brd',
+        'oee_bundeslaender',
+        'oee_kreise',
+        'oee_gemeinden',
+      ].join(),
+      format: 'image/png',
+      transparent: true,
+    }),
     WIND: L.geoJson(await shpjs('data/wind.zip')),
     POINTS: L.layerGroup(),
   },
@@ -75,7 +98,7 @@ const addFlstk = (flstk: FlstkInfo): L.Polygon<any> | null => {
       className: 'map-flstk',
     },
   )
-    .addTo(Model.layers.FLURSTK)
+    .addTo(Model.layers.FLURSTÜCK)
     .on('click', () => {
       args.set(ARG_LAND_Q, fname)
       history.pushState({}, `EGRO - ${fname}`, `${location.pathname}?${args.toString()}`)
@@ -151,7 +174,7 @@ export class LandMap extends Viewable {
     //Model.layers.ALKIS.addTo(map)
     //Model.layers.SOLAR.addTo(map)
     //Model.layers.WIND.addTo(map)
-    Model.layers.FLURSTK.addTo(map)
+    Model.layers.FLURSTÜCK.addTo(map)
     //Model.layers.POINTS.addTo(map)
     map.zoomControl.setPosition('bottomright')
     this.hoverControl.addTo(map)
@@ -181,13 +204,13 @@ export class LandMap extends Viewable {
       })
       const bbox = lg.getBounds().pad(0.2)
       this.map?.fitBounds(bbox!)
-    } else this.map?.fitBounds(Model.layers.FLURSTK.getBounds())
+    } else this.map?.fitBounds(Model.layers.FLURSTÜCK.getBounds())
   }
 
   landLoaded(data: LandData) {
     Model.points = []
     Model.layers.POINTS.clearLayers()
-    Model.layers.FLURSTK.clearLayers()
+    Model.layers.FLURSTÜCK.clearLayers()
     data.coords.forEach(addPoint)
     Model.layers.POINTS.addLayer(this.nearestCursor)
     Model.polyMap = Object.entries(data.info).reduce(
