@@ -1,19 +1,19 @@
 {
   "name": "egro",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "type": "module",
   "scripts": {
     "dev": "vp dev",
     "build": "tsc && vp build",
     "preview": "vp preview",
     "prepare": "vp config",
-    "create:meta": "tsx ./src/script/create-meta.ts",
-    "crypt:asset": "tsx --env-file .env ./src/script/crypt-asset.ts",
-    "crypt:keys": "tsx --env-file .env ./src/script/crypt-keys.ts"
+    "create:meta": "vpx ./src/script/create-meta.ts",
+    "crypt:asset": "vpx --env-file .env ./src/script/crypt-asset.ts",
+    "crypt:keys": "vpx --env-file .env ./src/script/crypt-keys.ts"
   },
   "dependencies": {
     "leaflet": "^1.9.4",
-    "lightweight-charts": "^5.2.1",
+    "lightweight-charts": "^5.3.0",
     "shpjs": "^6.2.0",
     "zero-md": "^3.1.9"
   },
